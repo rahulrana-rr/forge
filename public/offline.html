@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark light" />
+    <title>Offline · FORGE</title>
+    <style>
+      :root {
+        --background: #f9fafb;
+        --foreground: #16181d;
+        --muted: #626774;
+        --volt: #94d72e;
+        --volt-foreground: #12180a;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --background: #040507;
+          --foreground: #f4f5f7;
+          --muted: #9a9ea8;
+          --volt: #c5f53b;
+          --volt-foreground: #10160a;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100dvh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: max(1.5rem, env(safe-area-inset-top)) 1.25rem max(1.5rem, env(safe-area-inset-bottom));
+        background: var(--background);
+        color: var(--foreground);
+        font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+      }
+      main {
+        width: 100%;
+        max-width: 28rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      h1 {
+        margin: 0;
+        font-size: 2rem;
+        line-height: 1.05;
+        font-weight: 900;
+        letter-spacing: -0.02em;
+      }
+      p {
+        margin: 0;
+        color: var(--muted);
+      }
+      a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 3.5rem;
+        margin-top: 0.5rem;
+        border-radius: 1.25rem;
+        background: var(--volt);
+        color: var(--volt-foreground);
+        font-weight: 700;
+        text-decoration: none;
+      }
+      a:focus-visible {
+        outline: 3px solid var(--foreground);
+        outline-offset: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>You&rsquo;re offline.</h1>
+      <p>
+        This page hasn&rsquo;t been saved for offline use yet. Today&rsquo;s workout and your history are still on this
+        device.
+      </p>
+      <a href="/today">Open today&rsquo;s workout</a>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,2039 @@
+{
+ "sources": {
+  "photos": "free-exercise-db (Unlicense)",
+  "videos": "wger.de (CC BY-SA 4.0)",
+  "animations": "ExerciseDB open-source 180p GIFs, Kaggle fitness-exercises-dataset (listed MIT; see public/media/CREDITS.md)"
+ },
+ "exercises": {
+  "barbell-bench-press": {
+   "frames": {
+    "fedbId": "Barbell_Bench_Press_-_Medium_Grip"
+   },
+   "video": {
+    "uuid": "255b3509-e454-48a6-bf66-c7ca482be21a",
+    "url": "https://wger.de/media/exercise-video/73/255b3509-e454-48a6-bf66-c7ca482be21a.MOV",
+    "author": "Goulart",
+    "wgerExerciseId": 73,
+    "durationS": 20.78,
+    "quality": 4,
+    "camera": "45 degrees from the head end"
+   }
+  },
+  "incline-barbell-bench-press": {
+   "frames": {
+    "fedbId": "Barbell_Incline_Bench_Press_-_Medium_Grip"
+   }
+  },
+  "decline-barbell-bench-press": {
+   "frames": {
+    "fedbId": "Decline_Barbell_Bench_Press"
+   }
+  },
+  "dumbbell-bench-press": {
+   "frames": {
+    "fedbId": "Dumbbell_Bench_Press"
+   },
+   "video": {
+    "uuid": "c9cbd391-1e22-4014-8794-04630c80665f",
+    "url": "https://wger.de/media/exercise-video/75/c9cbd391-1e22-4014-8794-04630c80665f.MOV",
+    "author": "Goulart",
+    "wgerExerciseId": 75,
+    "durationS": 11.28,
+    "quality": 4,
+    "camera": "45 degrees from the head end, slightly elevated"
+   }
+  },
+  "incline-dumbbell-press": {
+   "frames": {
+    "fedbId": "Incline_Dumbbell_Press"
+   }
+  },
+  "decline-dumbbell-press": {
+   "frames": {
+    "fedbId": "Decline_Dumbbell_Bench_Press"
+   }
+  },
+  "machine-chest-press": {
+   "frames": {
+    "fedbId": "Leverage_Chest_Press"
+   }
+  },
+  "smith-machine-bench-press": {
+   "frames": {
+    "fedbId": "Smith_Machine_Bench_Press"
+   }
+  },
+  "machine-incline-chest-press": {
+   "frames": {
+    "fedbId": "Leverage_Incline_Chest_Press"
+   }
+  },
+  "single-arm-cable-press": {
+   "frames": {
+    "fedbId": "Standing_Cable_Chest_Press"
+   }
+  },
+  "cable-fly": {
+   "frames": {
+    "fedbId": "Cable_Crossover"
+   }
+  },
+  "incline-cable-fly": {
+   "frames": {
+    "fedbId": "Incline_Cable_Flye"
+   }
+  },
+  "low-to-high-cable-fly": {
+   "frames": {
+    "fedbId": "Low_Cable_Crossover"
+   }
+  },
+  "dumbbell-fly": {
+   "frames": {
+    "fedbId": "Dumbbell_Flyes"
+   }
+  },
+  "incline-dumbbell-fly": {
+   "frames": {
+    "fedbId": "Incline_Dumbbell_Flyes"
+   }
+  },
+  "pec-deck": {
+   "frames": {
+    "fedbId": "Butterfly"
+   }
+  },
+  "band-fly": {
+   "frames": {
+    "fedbId": "Cross_Over_-_With_Bands"
+   }
+  },
+  "push-up": {
+   "frames": {
+    "fedbId": "Pushups"
+   }
+  },
+  "incline-push-up": {
+   "frames": {
+    "fedbId": "Incline_Push-Up"
+   }
+  },
+  "decline-push-up": {
+   "frames": {
+    "fedbId": "Decline_Push-Up"
+   }
+  },
+  "diamond-push-up": {
+   "frames": {
+    "fedbId": "Push-Ups_-_Close_Triceps_Position"
+   }
+  },
+  "wide-grip-push-up": {
+   "frames": {
+    "fedbId": "Push-Up_Wide"
+   }
+  },
+  "plyometric-push-up": {
+   "frames": {
+    "fedbId": "Plyo_Push-up"
+   }
+  },
+  "suspension-push-up": {
+   "frames": {
+    "fedbId": "Suspended_Push-Up"
+   }
+  },
+  "chest-dip": {
+   "frames": {
+    "fedbId": "Dips_-_Chest_Version"
+   },
+   "video": {
+    "uuid": "d039ec90-474d-47a9-a3ad-bf0b00828c82",
+    "url": "https://wger.de/media/exercise-video/194/d039ec90-474d-47a9-a3ad-bf0b00828c82.MP4",
+    "author": "Goulart",
+    "wgerExerciseId": 194,
+    "durationS": 12.75,
+    "quality": 3,
+    "camera": "side view, close"
+   }
+  },
+  "floor-press": {
+   "frames": {
+    "fedbId": "Floor_Press"
+   }
+  },
+  "dumbbell-floor-press": {
+   "frames": {
+    "fedbId": "Dumbbell_Floor_Press"
+   }
+  },
+  "kettlebell-floor-press": {
+   "frames": {
+    "fedbId": "One-Arm_Kettlebell_Floor_Press"
+   }
+  },
+  "dumbbell-pullover": {
+   "frames": {
+    "fedbId": "Straight-Arm_Dumbbell_Pullover"
+   }
+  },
+  "overhead-press": {
+   "frames": {
+    "fedbId": "Standing_Military_Press"
+   }
+  },
+  "seated-barbell-overhead-press": {
+   "frames": {
+    "fedbId": "Barbell_Shoulder_Press"
+   }
+  },
+  "seated-dumbbell-shoulder-press": {
+   "frames": {
+    "fedbId": "Dumbbell_Shoulder_Press"
+   }
+  },
+  "standing-dumbbell-shoulder-press": {
+   "frames": {
+    "fedbId": "Standing_Dumbbell_Press"
+   }
+  },
+  "single-arm-dumbbell-shoulder-press": {
+   "frames": {
+    "fedbId": "Dumbbell_One-Arm_Shoulder_Press"
+   }
+  },
+  "arnold-press": {
+   "frames": {
+    "fedbId": "Arnold_Dumbbell_Press"
+   }
+  },
+  "machine-shoulder-press": {
+   "frames": {
+    "fedbId": "Machine_Shoulder_Military_Press"
+   },
+   "video": {
+    "uuid": "dbfd396b-1aab-4a64-a50b-2c31ff0a2cf7",
+    "url": "https://wger.de/media/exercise-video/543/dbfd396b-1aab-4a64-a50b-2c31ff0a2cf7.MOV",
+    "author": "Goulart",
+    "wgerExerciseId": 543,
+    "durationS": 12.27,
+    "quality": 3,
+    "camera": "front view"
+   }
+  },
+  "smith-machine-shoulder-press": {
+   "frames": {
+    "fedbId": "Smith_Machine_Overhead_Shoulder_Press"
+   }
+  },
+  "push-press": {
+   "frames": {
+    "fedbId": "Push_Press"
+   }
+  },
+  "landmine-shoulder-press": {
+   "frames": {
+    "fedbId": "Single-Arm_Linear_Jammer"
+   }
+  },
+  "single-arm-kettlebell-press": {
+   "frames": {
+    "fedbId": "One-Arm_Kettlebell_Military_Press_To_The_Side"
+   }
+  },
+  "band-overhead-press": {
+   "frames": {
+    "fedbId": "Shoulder_Press_-_With_Bands"
+   }
+  },
+  "handstand-push-up": {
+   "frames": {
+    "fedbId": "Handstand_Push-Ups"
+   }
+  },
+  "dumbbell-lateral-raise": {
+   "frames": {
+    "fedbId": "Side_Lateral_Raise"
+   },
+   "video": {
+    "uuid": "de69928a-8a35-4096-821c-1f46de5e0e03",
+    "url": "https://wger.de/media/exercise-video/348/de69928a-8a35-4096-821c-1f46de5e0e03.MOV",
+    "author": "Goulart",
+    "wgerExerciseId": 348,
+    "durationS": 18.26,
+    "quality": 4,
+    "camera": "front view, then cuts to 45 degrees side"
+   }
+  },
+  "seated-dumbbell-lateral-raise": {
+   "frames": {
+    "fedbId": "Seated_Side_Lateral_Raise"
+   }
+  },
+  "cable-lateral-raise": {
+   "frames": {
+    "fedbId": "Standing_Low-Pulley_Deltoid_Raise"
+   },
+   "video": {
+    "uuid": "9896d82e-d8b6-48af-bdd5-b8545dc523e9",
+    "url": "https://wger.de/media/exercise-video/349/9896d82e-d8b6-48af-bdd5-b8545dc523e9.MOV",
+    "author": "Goulart",
+    "wgerExerciseId": 349,
+    "durationS": 13.22,
+    "quality": 3,
+    "camera": "front view"
+   }
+  },
+  "band-lateral-raise": {
+   "frames": {
+    "fedbId": "Lateral_Raise_-_With_Bands"
+   }
+  },
+  "dumbbell-front-raise": {
+   "frames": {
+    "fedbId": "Front_Two-Dumbbell_Raise"
+   }
+  },
+  "cable-front-raise": {
+   "frames": {
+    "fedbId": "Front_Cable_Raise"
+   }
+  },
+  "rear-delt-fly": {
+   "frames": {
+    "fedbId": "Bent_Over_Dumbbell_Rear_Delt_Raise_With_Head_On_Bench"
+   }
+  },
+  "chest-supported-rear-delt-fly": {
+   "frames": {
+    "fedbId": "Reverse_Flyes"
+   }
+  },
+  "reverse-pec-deck": {
+   "frames": {
+    "fedbId": "Reverse_Machine_Flyes"
+   }
+  },
+  "cable-rear-delt-fly": {
+   "frames": {
+    "fedbId": "Cable_Rear_Delt_Fly"
+   }
+  },
+  "face-pull": {
+   "frames": {
+    "fedbId": "Face_Pull"
+   },
+   "video": {
+    "uuid": "eea93fcc-6a3c-4783-8f70-0234c791a001",
+    "url": "https://wger.de/media/exercise-video/222/eea93fcc-6a3c-4783-8f70-0234c791a001.MOV",
+    "author": "Goulart",
+    "wgerExerciseId": 222,
+    "durationS": 8.57,
+    "quality": 3,
+    "camera": "rear view, waist up"
+   }
+  },
+  "upright-row": {
+   "frames": {
+    "fedbId": "Upright_Barbell_Row"
+   }
+  },
+  "cable-upright-row": {
+   "frames": {
+    "fedbId": "Upright_Cable_Row"
+   }
+  },
+  "barbell-shrug": {
+   "frames": {
+    "fedbId": "Barbell_Shrug"
+   }
+  },
+  "dumbbell-shrug": {
+   "frames": {
+    "fedbId": "Dumbbell_Shrug"
+   }
+  },
+  "pull-up": {
+   "frames": {
+    "fedbId": "Pullups"
+   },
+   "video": {
+    "uuid": "83067ffe-ccb9-4e22-8507-5131b211ce74",
+    "url": "https://wger.de/media/exercise-video/475/83067ffe-ccb9-4e22-8507-5131b211ce74.MOV",
+    "author": "Goulart",
+    "wgerExerciseId": 475,
+    "durationS": 18.77,
+    "quality": 3,
+    "camera": "rear view, eye level"
+   }
+  },
+  "chin-up": {
+   "frames": {
+    "fedbId": "Chin-Up"
+   }
+  },
+  "neutral-grip-pull-up": {
+   "frames": {
+    "fedbId": "V-Bar_Pullup"
+   }
+  },
+  "weighted-pull-up": {
+   "frames": {
+    "fedbId": "Weighted_Pull_Ups"
+   }
+  },
+  "assisted-pull-up": {
+   "video": {
+    "uuid": "2e23bb52-2782-40c8-bf88-fa2d2e2a9a0d",
+    "url": "https://wger.de/media/exercise-video/477/2e23bb52-2782-40c8-bf88-fa2d2e2a9a0d.MOV",
+    "author": "Goulart",
+    "wgerExerciseId": 477,
+    "durationS": 18.77,
+    "quality": 3,
+    "camera": "rear view"
+   }
+  },
+  "band-assisted-pull-up": {
+   "frames": {
+    "fedbId": "Band_Assisted_Pull-Up"
+   }
+  },
+  "lat-pulldown": {
+   "frames": {
+    "fedbId": "Wide-Grip_Lat_Pulldown"
+   }
+  },
+  "close-grip-lat-pulldown": {
+   "frames": {
+    "fedbId": "Close-Grip_Front_Lat_Pulldown"
+   }
+  },
+  "wide-grip-lat-pulldown": {
+   "frames": {
+    "fedbId": "Wide-Grip_Lat_Pulldown"
+   }
+  },
+  "reverse-grip-lat-pulldown": {
+   "frames": {
+    "fedbId": "Underhand_Cable_Pulldowns"
+   }
+  },
+  "single-arm-lat-pulldown": {
+   "frames": {
+    "fedbId": "One_Arm_Lat_Pulldown"
+   }
+  },
+  "bent-over-barbell-row": {
+   "frames": {
+    "fedbId": "Bent_Over_Barbell_Row"
+   }
+  },
+  "seal-row": {
+   "frames": {
+    "fedbId": "Lying_Cambered_Barbell_Row"
+   }
+  },
+  "single-arm-dumbbell-row": {
+   "frames": {
+    "fedbId": "One-Arm_Dumbbell_Row"
+   }
+  },
+  "chest-supported-dumbbell-row": {
+   "frames": {
+    "fedbId": "Dumbbell_Incline_Row"
+   }
+  },
+  "dumbbell-bent-over-row": {
+   "frames": {
+    "fedbId": "Bent_Over_Two-Dumbbell_Row"
+   }
+  },
+  "kettlebell-row": {
+   "frames": {
+    "fedbId": "One-Arm_Kettlebell_Row"
+   }
+  },
+  "t-bar-row": {
+   "frames": {
+    "fedbId": "T-Bar_Row_with_Handle"
+   }
+  },
+  "landmine-row": {
+   "frames": {
+    "fedbId": "T-Bar_Row_with_Handle"
+   }
+  },
+  "seated-cable-row": {
+   "frames": {
+    "fedbId": "Seated_Cable_Rows"
+   },
+   "video": {
+    "uuid": "fff4c294-93f0-4926-b3a2-bf59ad4afaa5",
+    "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+    "author": "Goulart",
+    "wgerExerciseId": 512,
+    "durationS": 10.49,
+    "quality": 3,
+    "camera": "front 45 degrees"
+   }
+  },
+  "single-arm-cable-row": {
+   "frames": {
+    "fedbId": "Seated_One-arm_Cable_Pulley_Rows"
+   }
+  },
+  "machine-row": {
+   "frames": {
+    "fedbId": "Leverage_Iso_Row"
+   }
+  },
+  "inverted-row": {
+   "frames": {
+    "fedbId": "Inverted_Row"
+   }
+  },
+  "suspension-row": {
+   "frames": {
+    "fedbId": "Inverted_Row_with_Straps"
+   }
+  },
+  "straight-arm-pulldown": {
+   "frames": {
+    "fedbId": "Straight-Arm_Pulldown"
+   }
+  },
+  "rack-pull": {
+   "frames": {
+    "fedbId": "Rack_Pulls"
+   }
+  },
+  "negative-pull-up": {
+   "frames": {
+    "fedbId": "Pullups"
+   }
+  },
+  "barbell-curl": {
+   "frames": {
+    "fedbId": "Barbell_Curl"
+   },
+   "video": {
+    "uuid": "483f4bff-e108-41f1-8e7b-0caf24952552",
+    "url": "https://wger.de/media/exercise-video/91/483f4bff-e108-41f1-8e7b-0caf24952552.MOV",
+    "author": "Goulart",
+    "wgerExerciseId": 91,
+    "durationS": 12.34,
+    "quality": 3,
+    "camera": "side view"
+   }
+  },
+  "ez-bar-curl": {
+   "frames": {
+    "fedbId": "Close-Grip_EZ_Bar_Curl"
+   }
+  },
+  "dumbbell-curl": {
+   "frames": {
+    "fedbId": "Dumbbell_Bicep_Curl"
+   },
+   "video": {
+    "uuid": "8bfb917c-3d0d-49b9-8073-5d7e01c1b894",
+    "url": "https://wger.de/media/exercise-video/92/8bfb917c-3d0d-49b9-8073-5d7e01c1b894.MOV",
+    "author": "Goulart",
+    "wgerExerciseId": 92,
+    "durationS": 10.94,
+    "quality": 4,
+    "camera": "side view"
+   }
+  },
+  "alternating-dumbbell-curl": {
+   "frames": {
+    "fedbId": "Dumbbell_Alternate_Bicep_Curl"
+   }
+  },
+  "hammer-curl": {
+   "frames": {
+    "fedbId": "Hammer_Curls"
+   },
+   "video": {
+    "uuid": "df069052-2173-4f24-855f-a0eebe729f24",
+    "url": "https://wger.de/media/exercise-video/272/df069052-2173-4f24-855f-a0eebe729f24.MOV",
+    "author": "Goulart",
+    "wgerExerciseId": 272,
+    "durationS": 10.37,
+    "quality": 4,
+    "camera": "side view"
+   }
+  },
+  "cross-body-hammer-curl": {
+   "frames": {
+    "fedbId": "Cross_Body_Hammer_Curl"
+   }
+  },
+  "cable-rope-hammer-curl": {
+   "frames": {
+    "fedbId": "Cable_Hammer_Curls_-_Rope_Attachment"
+   },
+   "video": {
+    "uuid": "af1fff93-eb58-4ba7-97a4-b38ee67853b4",
+    "url": "https://wger.de/media/exercise-video/275/af1fff93-eb58-4ba7-97a4-b38ee67853b4.MOV",
+    "author": "Goulart",
+    "wgerExerciseId": 275,
+    "durationS": 11.85,
+    "quality": 3,
+    "camera": "45 degrees front-side, close-up"
+   }
+  },
+  "incline-dumbbell-curl": {
+   "frames": {
+    "fedbId": "Incline_Dumbbell_Curl"
+   }
+  },
+  "preacher-curl": {
+   "frames": {
+    "fedbId": "Preacher_Curl"
+   },
+   "video": {
+    "uuid": "b64ca95b-c677-4f3b-bb50-f75edc81aa74",
+    "url": "https://wger.de/media/exercise-video/465/b64ca95b-c677-4f3b-bb50-f75edc81aa74.MOV",
+    "author": "Goulart",
+    "wgerExerciseId": 465,
+    "durationS": 25.78,
+    "quality": 3,
+    "camera": "side view moving to front view, handheld"
+   }
+  },
+  "single-arm-dumbbell-preacher-curl": {
+   "frames": {
+    "fedbId": "One_Arm_Dumbbell_Preacher_Curl"
+   },
+   "video": {
+    "uuid": "109e8d5d-62a4-40ad-8813-2ccef5bc751f",
+    "url": "https://wger.de/media/exercise-video/584/109e8d5d-62a4-40ad-8813-2ccef5bc751f.MOV",
+    "author": "Goulart",
+    "wgerExerciseId": 584,
+    "durationS": 13.02,
+    "quality": 3,
+    "camera": "front 45 degrees, close"
+   }
+  },
+  "concentration-curl": {
+   "frames": {
+    "fedbId": "Concentration_Curls"
+   }
+  },
+  "spider-curl": {
+   "frames": {
+    "fedbId": "Dumbbell_Prone_Incline_Curl"
+   }
+  },
+  "cable-curl": {
+   "frames": {
+    "fedbId": "Standing_Biceps_Cable_Curl"
+   }
+  },
+  "machine-bicep-curl": {
+   "frames": {
+    "fedbId": "Machine_Preacher_Curls"
+   },
+   "video": {
+    "uuid": "5d2339a4-815f-46ba-aa19-8a763cfdeba0",
+    "url": "https://wger.de/media/exercise-video/465/5d2339a4-815f-46ba-aa19-8a763cfdeba0.MOV",
+    "author": "Goulart",
+    "wgerExerciseId": 465,
+    "durationS": 14.32,
+    "quality": 4,
+    "camera": "45 degrees front-side"
+   }
+  },
+  "drag-curl": {
+   "frames": {
+    "fedbId": "Drag_Curl"
+   }
+  },
+  "zottman-curl": {
+   "frames": {
+    "fedbId": "Zottman_Curl"
+   }
+  },
+  "reverse-curl": {
+   "frames": {
+    "fedbId": "Reverse_Barbell_Curl"
+   }
+  },
+  "wrist-curl": {
+   "frames": {
+    "fedbId": "Seated_Palm-Up_Barbell_Wrist_Curl"
+   }
+  },
+  "reverse-wrist-curl": {
+   "frames": {
+    "fedbId": "Seated_Palms-Down_Barbell_Wrist_Curl"
+   }
+  },
+  "plate-pinch": {
+   "frames": {
+    "fedbId": "Plate_Pinch"
+   }
+  },
+  "close-grip-bench-press": {
+   "frames": {
+    "fedbId": "Close-Grip_Barbell_Bench_Press"
+   }
+  },
+  "smith-machine-close-grip-bench-press": {
+   "frames": {
+    "fedbId": "Smith_Machine_Close-Grip_Bench_Press"
+   }
+  },
+  "jm-press": {
+   "frames": {
+    "fedbId": "JM_Press"
+   }
+  },
+  "cable-triceps-pushdown": {
+   "frames": {
+    "fedbId": "Triceps_Pushdown"
+   }
+  },
+  "rope-pushdown": {
+   "frames": {
+    "fedbId": "Triceps_Pushdown_-_Rope_Attachment"
+   }
+  },
+  "single-arm-cable-pushdown": {
+   "video": {
+    "uuid": "589d24e5-aaee-455d-93fd-f0f01da5d9c6",
+    "url": "https://wger.de/media/exercise-video/803/589d24e5-aaee-455d-93fd-f0f01da5d9c6.MOV",
+    "author": "Goulart",
+    "wgerExerciseId": 803,
+    "durationS": 12.28,
+    "quality": 3,
+    "camera": "side view, close crop"
+   }
+  },
+  "reverse-grip-pushdown": {
+   "frames": {
+    "fedbId": "Reverse_Grip_Triceps_Pushdown"
+   }
+  },
+  "overhead-cable-triceps-extension": {
+   "frames": {
+    "fedbId": "Triceps_Overhead_Extension_with_Rope"
+   }
+  },
+  "overhead-dumbbell-triceps-extension": {
+   "frames": {
+    "fedbId": "Standing_Dumbbell_Triceps_Extension"
+   },
+   "video": {
+    "uuid": "85f6eb25-a76c-409e-9af9-497794ac0dfb",
+    "url": "https://wger.de/media/exercise-video/211/85f6eb25-a76c-409e-9af9-497794ac0dfb.MOV",
+    "author": "Goulart",
+    "wgerExerciseId": 211,
+    "durationS": 32.02,
+    "quality": 3,
+    "camera": "multi-angle montage: side, then close rear, then front"
+   }
+  },
+  "single-arm-overhead-extension": {
+   "frames": {
+    "fedbId": "Dumbbell_One-Arm_Triceps_Extension"
+   }
+  },
+  "ez-bar-overhead-triceps-extension": {
+   "frames": {
+    "fedbId": "Standing_Overhead_Barbell_Triceps_Extension"
+   }
+  },
+  "band-overhead-triceps-extension": {
+   "frames": {
+    "fedbId": "Speed_Band_Overhead_Triceps"
+   }
+  },
+  "skull-crusher": {
+   "frames": {
+    "fedbId": "EZ-Bar_Skullcrusher"
+   },
+   "video": {
+    "uuid": "75eb8c88-922e-45c5-8be3-ac073f62b63f",
+    "url": "https://wger.de/media/exercise-video/246/75eb8c88-922e-45c5-8be3-ac073f62b63f.MP4",
+    "author": "Goulart",
+    "wgerExerciseId": 246,
+    "durationS": 15.23,
+    "quality": 4,
+    "camera": "side view"
+   }
+  },
+  "dumbbell-skull-crusher": {
+   "frames": {
+    "fedbId": "Lying_Dumbbell_Tricep_Extension"
+   },
+   "video": {
+    "uuid": "c253303e-9160-4f1f-b4fe-daf1e6c8661d",
+    "url": "https://wger.de/media/exercise-video/245/c253303e-9160-4f1f-b4fe-daf1e6c8661d.MOV",
+    "author": "Goulart",
+    "wgerExerciseId": 245,
+    "durationS": 18.72,
+    "quality": 3,
+    "camera": "mixed: head-end front view, then side view"
+   }
+  },
+  "bodyweight-skull-crusher": {
+   "frames": {
+    "fedbId": "Body_Tricep_Press"
+   }
+  },
+  "tate-press": {
+   "frames": {
+    "fedbId": "Tate_Press"
+   }
+  },
+  "triceps-dip": {
+   "frames": {
+    "fedbId": "Dips_-_Triceps_Version"
+   }
+  },
+  "bench-dip": {
+   "frames": {
+    "fedbId": "Bench_Dips"
+   }
+  },
+  "machine-dip": {
+   "frames": {
+    "fedbId": "Dip_Machine"
+   }
+  },
+  "machine-triceps-extension": {
+   "frames": {
+    "fedbId": "Machine_Triceps_Extension"
+   }
+  },
+  "dumbbell-kickback": {
+   "frames": {
+    "fedbId": "Tricep_Dumbbell_Kickback"
+   },
+   "video": {
+    "uuid": "69e8c1e5-55b2-4da6-8166-092c24b16735",
+    "url": "https://wger.de/media/exercise-video/655/69e8c1e5-55b2-4da6-8166-092c24b16735.MOV",
+    "author": "Goulart",
+    "wgerExerciseId": 655,
+    "durationS": 12.19,
+    "quality": 4,
+    "camera": "side view"
+   }
+  },
+  "bodyweight-triceps-extension": {
+   "frames": {
+    "fedbId": "Body_Tricep_Press"
+   }
+  },
+  "barbell-back-squat": {
+   "frames": {
+    "fedbId": "Barbell_Squat"
+   }
+  },
+  "front-squat": {
+   "frames": {
+    "fedbId": "Front_Squat_Clean_Grip"
+   },
+   "video": {
+    "uuid": "520b98d4-c767-47dd-83e6-850189217925",
+    "url": "https://wger.de/media/exercise-video/257/520b98d4-c767-47dd-83e6-850189217925.MOV",
+    "author": "Goulart",
+    "wgerExerciseId": 257,
+    "durationS": 16.09,
+    "quality": 4,
+    "camera": "rear 45 degrees, full body"
+   }
+  },
+  "goblet-squat": {
+   "frames": {
+    "fedbId": "Goblet_Squat"
+   }
+  },
+  "hack-squat": {
+   "frames": {
+    "fedbId": "Hack_Squat"
+   }
+  },
+  "leg-press": {
+   "frames": {
+    "fedbId": "Leg_Press"
+   },
+   "video": {
+    "uuid": "6aae16b4-01b9-4eb4-935c-3250f84d2c59",
+    "url": "https://wger.de/media/exercise-video/371/6aae16b4-01b9-4eb4-935c-3250f84d2c59.MOV",
+    "author": "Goulart",
+    "wgerExerciseId": 371,
+    "durationS": 34.69,
+    "quality": 4,
+    "camera": "side view"
+   }
+  },
+  "smith-machine-squat": {
+   "frames": {
+    "fedbId": "Smith_Machine_Squat"
+   },
+   "video": {
+    "uuid": "0cbfeace-dda9-4166-8424-f51358e88a4f",
+    "url": "https://wger.de/media/exercise-video/341/0cbfeace-dda9-4166-8424-f51358e88a4f.MOV",
+    "author": "Goulart",
+    "wgerExerciseId": 341,
+    "durationS": 11.96,
+    "quality": 3,
+    "camera": "45 degrees rear-side view"
+   }
+  },
+  "box-squat": {
+   "frames": {
+    "fedbId": "Box_Squat"
+   }
+  },
+  "pause-squat": {
+   "frames": {
+    "fedbId": "Barbell_Squat"
+   }
+  },
+  "zercher-squat": {
+   "frames": {
+    "fedbId": "Zercher_Squats"
+   }
+  },
+  "dumbbell-front-squat": {
+   "frames": {
+    "fedbId": "Front_Squats_With_Two_Kettlebells"
+   }
+  },
+  "bodyweight-squat": {
+   "frames": {
+    "fedbId": "Bodyweight_Squat"
+   }
+  },
+  "pistol-squat": {
+   "frames": {
+    "fedbId": "Kettlebell_Pistol_Squat"
+   }
+  },
+  "dumbbell-sumo-squat": {
+   "frames": {
+    "fedbId": "Plie_Dumbbell_Squat"
+   }
+  },
+  "bulgarian-split-squat": {
+   "frames": {
+    "fedbId": "Split_Squat_with_Dumbbells"
+   }
+  },
+  "dumbbell-walking-lunge": {
+   "frames": {
+    "fedbId": "Dumbbell_Lunges"
+   },
+   "video": {
+    "uuid": "47a65c45-6fd1-4181-b71a-3a6c882e516b",
+    "url": "https://wger.de/media/exercise-video/206/47a65c45-6fd1-4181-b71a-3a6c882e516b.MOV",
+    "author": "Goulart",
+    "wgerExerciseId": 206,
+    "durationS": 14.31,
+    "quality": 3,
+    "camera": "front view, lifter walks toward camera"
+   }
+  },
+  "reverse-lunge": {
+   "frames": {
+    "fedbId": "Dumbbell_Rear_Lunge"
+   }
+  },
+  "forward-lunge": {
+   "frames": {
+    "fedbId": "Bodyweight_Walking_Lunge"
+   }
+  },
+  "step-up": {
+   "frames": {
+    "fedbId": "Dumbbell_Step_Ups"
+   }
+  },
+  "dumbbell-split-squat": {
+   "video": {
+    "uuid": "4cd5dc48-897f-4e0c-8c5a-639a4098ceb1",
+    "url": "https://wger.de/media/exercise-video/205/4cd5dc48-897f-4e0c-8c5a-639a4098ceb1.MOV",
+    "author": "Goulart",
+    "wgerExerciseId": 205,
+    "durationS": 17.94,
+    "quality": 4,
+    "camera": "45 degrees side view, full body"
+   }
+  },
+  "barbell-reverse-lunge": {
+   "frames": {
+    "fedbId": "Barbell_Lunge"
+   }
+  },
+  "dumbbell-reverse-lunge": {
+   "frames": {
+    "fedbId": "Dumbbell_Rear_Lunge"
+   }
+  },
+  "jumping-lunge": {
+   "frames": {
+    "fedbId": "Split_Jump"
+   }
+  },
+  "single-leg-leg-press": {
+   "frames": {
+    "fedbId": "Leg_Press"
+   }
+  },
+  "conventional-deadlift": {
+   "frames": {
+    "fedbId": "Barbell_Deadlift"
+   }
+  },
+  "sumo-deadlift": {
+   "frames": {
+    "fedbId": "Sumo_Deadlift"
+   }
+  },
+  "trap-bar-deadlift": {
+   "frames": {
+    "fedbId": "Trap_Bar_Deadlift"
+   }
+  },
+  "romanian-deadlift": {
+   "frames": {
+    "fedbId": "Romanian_Deadlift"
+   }
+  },
+  "dumbbell-romanian-deadlift": {
+   "frames": {
+    "fedbId": "Stiff-Legged_Dumbbell_Deadlift"
+   },
+   "video": {
+    "uuid": "6b6054b5-9236-4a63-8392-6ea7a9010ca6",
+    "url": "https://wger.de/media/exercise-video/507/6b6054b5-9236-4a63-8392-6ea7a9010ca6.MOV",
+    "author": "Goulart",
+    "wgerExerciseId": 507,
+    "durationS": 17.69,
+    "quality": 4,
+    "camera": "side view"
+   }
+  },
+  "single-leg-romanian-deadlift": {
+   "frames": {
+    "fedbId": "Kettlebell_One-Legged_Deadlift"
+   }
+  },
+  "good-morning": {
+   "frames": {
+    "fedbId": "Good_Morning"
+   }
+  },
+  "stiff-leg-deadlift": {
+   "frames": {
+    "fedbId": "Stiff-Legged_Barbell_Deadlift"
+   }
+  },
+  "leg-extension": {
+   "frames": {
+    "fedbId": "Leg_Extensions"
+   }
+  },
+  "lying-leg-curl": {
+   "frames": {
+    "fedbId": "Lying_Leg_Curls"
+   },
+   "video": {
+    "uuid": "becaf013-5044-40d0-bae9-7ed60c973737",
+    "url": "https://wger.de/media/exercise-video/365/becaf013-5044-40d0-bae9-7ed60c973737.MOV",
+    "author": "Goulart",
+    "wgerExerciseId": 365,
+    "durationS": 15.06,
+    "quality": 3,
+    "camera": "45 degrees from the head end"
+   }
+  },
+  "seated-leg-curl": {
+   "frames": {
+    "fedbId": "Seated_Leg_Curl"
+   },
+   "video": {
+    "uuid": "43df4b79-d4c3-4fbf-bcb5-e0d825b84120",
+    "url": "https://wger.de/media/exercise-video/366/43df4b79-d4c3-4fbf-bcb5-e0d825b84120.MOV",
+    "author": "Goulart",
+    "wgerExerciseId": 366,
+    "durationS": 24.89,
+    "quality": 3,
+    "camera": "45 degrees front"
+   }
+  },
+  "nordic-hamstring-curl": {
+   "frames": {
+    "fedbId": "Floor_Glute-Ham_Raise"
+   }
+  },
+  "standing-calf-raise": {
+   "frames": {
+    "fedbId": "Standing_Calf_Raises"
+   }
+  },
+  "seated-calf-raise": {
+   "frames": {
+    "fedbId": "Seated_Calf_Raise"
+   },
+   "video": {
+    "uuid": "a325ae2e-686b-4a1f-aff2-ba37fa3fa157",
+    "url": "https://wger.de/media/exercise-video/590/a325ae2e-686b-4a1f-aff2-ba37fa3fa157.MOV",
+    "author": "Goulart",
+    "wgerExerciseId": 590,
+    "durationS": 20.71,
+    "quality": 3,
+    "camera": "45 degrees front-side view"
+   }
+  },
+  "leg-press-calf-raise": {
+   "frames": {
+    "fedbId": "Calf_Press_On_The_Leg_Press_Machine"
+   }
+  },
+  "dumbbell-calf-raise": {
+   "frames": {
+    "fedbId": "Standing_Dumbbell_Calf_Raise"
+   }
+  },
+  "smith-machine-calf-raise": {
+   "frames": {
+    "fedbId": "Smith_Machine_Calf_Raise"
+   }
+  },
+  "bodyweight-single-leg-rdl": {
+   "frames": {
+    "fedbId": "Kettlebell_One-Legged_Deadlift"
+   }
+  },
+  "barbell-hip-thrust": {
+   "frames": {
+    "fedbId": "Barbell_Hip_Thrust"
+   },
+   "video": {
+    "uuid": "45bacf4b-1bb6-4d47-8bd1-9f00eddd4019",
+    "url": "https://wger.de/media/exercise-video/294/45bacf4b-1bb6-4d47-8bd1-9f00eddd4019.MOV",
+    "author": "Goulart",
+    "wgerExerciseId": 294,
+    "durationS": 30.19,
+    "quality": 4,
+    "camera": "45 degrees front, elevated"
+   }
+  },
+  "glute-bridge": {
+   "frames": {
+    "fedbId": "Butt_Lift_Bridge"
+   }
+  },
+  "single-leg-glute-bridge": {
+   "frames": {
+    "fedbId": "Single_Leg_Glute_Bridge"
+   }
+  },
+  "barbell-glute-bridge": {
+   "frames": {
+    "fedbId": "Barbell_Glute_Bridge"
+   }
+  },
+  "banded-glute-bridge": {
+   "frames": {
+    "fedbId": "Butt_Lift_Bridge"
+   }
+  },
+  "cable-glute-kickback": {
+   "frames": {
+    "fedbId": "One-Legged_Cable_Kickback"
+   }
+  },
+  "band-glute-kickback": {
+   "frames": {
+    "fedbId": "Hip_Extension_with_Bands"
+   }
+  },
+  "cable-pull-through": {
+   "frames": {
+    "fedbId": "Pull_Through"
+   }
+  },
+  "reverse-hyperextension": {
+   "frames": {
+    "fedbId": "Reverse_Hyperextension"
+   }
+  },
+  "glute-ham-raise": {
+   "frames": {
+    "fedbId": "Natural_Glute_Ham_Raise"
+   }
+  },
+  "donkey-kick": {
+   "frames": {
+    "fedbId": "Glute_Kickback"
+   }
+  },
+  "hip-abduction-machine": {
+   "frames": {
+    "fedbId": "Thigh_Abductor"
+   }
+  },
+  "hip-adduction-machine": {
+   "frames": {
+    "fedbId": "Thigh_Adductor"
+   }
+  },
+  "banded-monster-walk": {
+   "frames": {
+    "fedbId": "Monster_Walk"
+   }
+  },
+  "cable-hip-adduction": {
+   "frames": {
+    "fedbId": "Cable_Hip_Adduction"
+   }
+  },
+  "plank": {
+   "frames": {
+    "fedbId": "Plank"
+   }
+  },
+  "weighted-plank": {
+   "frames": {
+    "fedbId": "Plank"
+   }
+  },
+  "side-plank": {
+   "frames": {
+    "fedbId": "Side_Bridge"
+   }
+  },
+  "side-plank-hip-dip": {
+   "frames": {
+    "fedbId": "Side_Bridge"
+   }
+  },
+  "dead-bug": {
+   "frames": {
+    "fedbId": "Dead_Bug"
+   }
+  },
+  "flutter-kick": {
+   "frames": {
+    "fedbId": "Scissor_Kick"
+   }
+  },
+  "crunch": {
+   "frames": {
+    "fedbId": "Crunches"
+   }
+  },
+  "sit-up": {
+   "frames": {
+    "fedbId": "Sit-Up"
+   }
+  },
+  "decline-sit-up": {
+   "frames": {
+    "fedbId": "Weighted_Sit-Ups_-_With_Bands"
+   }
+  },
+  "bicycle-crunch": {
+   "frames": {
+    "fedbId": "Air_Bike"
+   }
+  },
+  "reverse-crunch": {
+   "frames": {
+    "fedbId": "Reverse_Crunch"
+   }
+  },
+  "cable-crunch": {
+   "frames": {
+    "fedbId": "Cable_Crunch"
+   }
+  },
+  "machine-crunch": {
+   "frames": {
+    "fedbId": "Ab_Crunch_Machine"
+   }
+  },
+  "lying-leg-raise": {
+   "frames": {
+    "fedbId": "Flat_Bench_Lying_Leg_Raise"
+   }
+  },
+  "seated-knee-tuck": {
+   "frames": {
+    "fedbId": "Seated_Leg_Tucks"
+   }
+  },
+  "v-up": {
+   "frames": {
+    "fedbId": "Jackknife_Sit-Up"
+   }
+  },
+  "captains-chair-leg-raise": {
+   "frames": {
+    "fedbId": "Knee_Hip_Raise_On_Parallel_Bars"
+   }
+  },
+  "ab-wheel-rollout": {
+   "frames": {
+    "fedbId": "Ab_Roller"
+   }
+  },
+  "pallof-press": {
+   "frames": {
+    "fedbId": "Pallof_Press"
+   }
+  },
+  "cable-woodchop": {
+   "frames": {
+    "fedbId": "Standing_Cable_Wood_Chop"
+   }
+  },
+  "low-to-high-cable-woodchop": {
+   "frames": {
+    "fedbId": "Standing_Cable_Lift"
+   }
+  },
+  "landmine-rotation": {
+   "frames": {
+    "fedbId": "Landmine_180s"
+   }
+  },
+  "russian-twist": {
+   "frames": {
+    "fedbId": "Russian_Twist"
+   }
+  },
+  "medicine-ball-russian-twist": {
+   "frames": {
+    "fedbId": "Plate_Twist"
+   }
+  },
+  "dumbbell-side-bend": {
+   "frames": {
+    "fedbId": "Dumbbell_Side_Bend"
+   }
+  },
+  "kettlebell-windmill": {
+   "frames": {
+    "fedbId": "Kettlebell_Windmill"
+   }
+  },
+  "back-extension": {
+   "frames": {
+    "fedbId": "Hyperextensions_Back_Extensions"
+   }
+  },
+  "superman": {
+   "frames": {
+    "fedbId": "Superman"
+   }
+  },
+  "farmers-carry": {
+   "frames": {
+    "fedbId": "Farmers_Walk"
+   }
+  },
+  "battle-rope": {
+   "frames": {
+    "fedbId": "Battling_Ropes"
+   }
+  },
+  "sled-push": {
+   "frames": {
+    "fedbId": "Sled_Push"
+   }
+  },
+  "sled-drag": {
+   "frames": {
+    "fedbId": "Sled_Drag_-_Harness"
+   }
+  },
+  "kettlebell-clean": {
+   "frames": {
+    "fedbId": "Kettlebell_Dead_Clean"
+   }
+  },
+  "turkish-get-up": {
+   "frames": {
+    "fedbId": "Kettlebell_Turkish_Get-Up_Lunge_style"
+   }
+  },
+  "renegade-row": {
+   "frames": {
+    "fedbId": "Alternating_Renegade_Row"
+   }
+  },
+  "power-clean": {
+   "frames": {
+    "fedbId": "Power_Clean"
+   }
+  },
+  "barbell-clean-and-jerk": {
+   "frames": {
+    "fedbId": "Clean_and_Jerk"
+   }
+  },
+  "barbell-snatch": {
+   "frames": {
+    "fedbId": "Snatch"
+   }
+  },
+  "medicine-ball-slam": {
+   "frames": {
+    "fedbId": "Overhead_Slam"
+   }
+  },
+  "box-jump": {
+   "frames": {
+    "fedbId": "Front_Box_Jump"
+   }
+  },
+  "jump-squat": {
+   "frames": {
+    "fedbId": "Freehand_Jump_Squat"
+   }
+  },
+  "broad-jump": {
+   "frames": {
+    "fedbId": "Standing_Long_Jump"
+   }
+  },
+  "skater-jump": {
+   "frames": {
+    "fedbId": "Lateral_Bound"
+   }
+  },
+  "treadmill-run": {
+   "frames": {
+    "fedbId": "Running_Treadmill"
+   }
+  },
+  "treadmill-incline-walk": {
+   "frames": {
+    "fedbId": "Walking_Treadmill"
+   }
+  },
+  "stationary-bike": {
+   "frames": {
+    "fedbId": "Bicycling_Stationary"
+   }
+  },
+  "rowing-machine": {
+   "frames": {
+    "fedbId": "Rowing_Stationary"
+   }
+  },
+  "elliptical": {
+   "frames": {
+    "fedbId": "Elliptical_Trainer"
+   }
+  },
+  "stair-climber": {
+   "frames": {
+    "fedbId": "Step_Mill"
+   }
+  },
+  "treadmill-intervals": {
+   "frames": {
+    "fedbId": "Running_Treadmill"
+   }
+  },
+  "bike-intervals": {
+   "frames": {
+    "fedbId": "Bicycling_Stationary"
+   }
+  },
+  "rowing-intervals": {
+   "frames": {
+    "fedbId": "Rowing_Stationary"
+   }
+  },
+  "jump-rope": {
+   "frames": {
+    "fedbId": "Rope_Jumping"
+   }
+  },
+  "jump-rope-intervals": {
+   "frames": {
+    "fedbId": "Rope_Jumping"
+   }
+  },
+  "outdoor-run": {
+   "frames": {
+    "fedbId": "Trail_Running_Walking"
+   }
+  },
+  "hip-cars": {
+   "frames": {
+    "fedbId": "Hip_Circles_prone"
+   }
+  },
+  "scorpion": {
+   "frames": {
+    "fedbId": "Iron_Crosses_stretch"
+   }
+  },
+  "wrist-rocks": {
+   "frames": {
+    "fedbId": "Kneeling_Forearm_Stretch"
+   }
+  },
+  "foam-roll-quads": {
+   "frames": {
+    "fedbId": "Quadriceps-SMR"
+   }
+  },
+  "foam-roll-upper-back": {
+   "frames": {
+    "fedbId": "Rhomboids-SMR"
+   }
+  },
+  "foam-roll-glutes": {
+   "frames": {
+    "fedbId": "Piriformis-SMR"
+   }
+  },
+  "foam-roll-calves": {
+   "frames": {
+    "fedbId": "Calves-SMR"
+   }
+  },
+  "foam-roll-hamstrings": {
+   "frames": {
+    "fedbId": "Hamstring-SMR"
+   }
+  },
+  "warmup-bike": {
+   "frames": {
+    "fedbId": "Bicycling_Stationary"
+   }
+  },
+  "warmup-treadmill-walk": {
+   "frames": {
+    "fedbId": "Walking_Treadmill"
+   }
+  },
+  "warmup-row": {
+   "frames": {
+    "fedbId": "Rowing_Stationary"
+   }
+  },
+  "warmup-elliptical": {
+   "frames": {
+    "fedbId": "Elliptical_Trainer"
+   }
+  },
+  "warmup-jump-rope": {
+   "frames": {
+    "fedbId": "Rope_Jumping"
+   }
+  },
+  "arm-circles": {
+   "frames": {
+    "fedbId": "Arm_Circles"
+   }
+  },
+  "arm-swings": {
+   "frames": {
+    "fedbId": "Dynamic_Chest_Stretch"
+   }
+  },
+  "band-pull-apart": {
+   "frames": {
+    "fedbId": "Band_Pull_Apart"
+   }
+  },
+  "band-external-rotation": {
+   "frames": {
+    "fedbId": "External_Rotation_with_Band"
+   }
+  },
+  "scapular-pull-up": {
+   "frames": {
+    "fedbId": "Scapular_Pull-Up"
+   }
+  },
+  "push-up-primer": {
+   "frames": {
+    "fedbId": "Pushups"
+   }
+  },
+  "band-overhead-press-primer": {
+   "frames": {
+    "fedbId": "Shoulder_Press_-_With_Bands"
+   }
+  },
+  "cat-cow": {
+   "frames": {
+    "fedbId": "Cat_Stretch"
+   }
+  },
+  "dead-bug-primer": {
+   "frames": {
+    "fedbId": "Dead_Bug"
+   }
+  },
+  "worlds-greatest-stretch": {
+   "frames": {
+    "fedbId": "Worlds_Greatest_Stretch"
+   }
+  },
+  "leg-swings-front": {
+   "frames": {
+    "fedbId": "Front_Leg_Raises"
+   }
+  },
+  "leg-swings-side": {
+   "frames": {
+    "fedbId": "Side_Leg_Raises"
+   }
+  },
+  "hip-circles": {
+   "frames": {
+    "fedbId": "Standing_Hip_Circles"
+   }
+  },
+  "bodyweight-squat-primer": {
+   "frames": {
+    "fedbId": "Bodyweight_Squat"
+   }
+  },
+  "walking-lunge-primer": {
+   "frames": {
+    "fedbId": "Bodyweight_Walking_Lunge"
+   }
+  },
+  "glute-bridge-primer": {
+   "frames": {
+    "fedbId": "Butt_Lift_Bridge"
+   }
+  },
+  "inchworm": {
+   "frames": {
+    "fedbId": "Inchworm"
+   }
+  },
+  "band-good-morning": {
+   "frames": {
+    "fedbId": "Band_Good_Morning"
+   }
+  },
+  "clasped-hands-chest-stretch": {
+   "frames": {
+    "fedbId": "Standing_Biceps_Stretch"
+   }
+  },
+  "cross-body-shoulder-stretch": {
+   "frames": {
+    "fedbId": "Shoulder_Stretch"
+   }
+  },
+  "overhead-triceps-stretch": {
+   "frames": {
+    "fedbId": "Triceps_Stretch"
+   }
+  },
+  "upper-trap-stretch": {
+   "frames": {
+    "fedbId": "Side_Neck_Stretch"
+   }
+  },
+  "child-pose": {
+   "frames": {
+    "fedbId": "Childs_Pose"
+   }
+  },
+  "knees-to-chest": {
+   "frames": {
+    "fedbId": "Hug_Knees_To_Chest"
+   }
+  },
+  "seated-spinal-twist": {
+   "frames": {
+    "fedbId": "Dancers_Stretch"
+   }
+  },
+  "supine-spinal-twist": {
+   "frames": {
+    "fedbId": "Knee_Across_The_Body"
+   }
+  },
+  "standing-side-bend-stretch": {
+   "frames": {
+    "fedbId": "Standing_Lateral_Stretch"
+   }
+  },
+  "forward-fold": {
+   "frames": {
+    "fedbId": "Standing_Toe_Touches"
+   }
+  },
+  "lying-quad-stretch": {
+   "frames": {
+    "fedbId": "On_Your_Side_Quad_Stretch"
+   }
+  },
+  "kneeling-hip-flexor-stretch": {
+   "frames": {
+    "fedbId": "Kneeling_Hip_Flexor"
+   }
+  },
+  "standing-hamstring-stretch": {
+   "frames": {
+    "fedbId": "Standing_Gastrocnemius_Calf_Stretch"
+   }
+  },
+  "seated-hamstring-stretch": {
+   "frames": {
+    "fedbId": "Seated_Floor_Hamstring_Stretch"
+   }
+  },
+  "band-hamstring-stretch": {
+   "frames": {
+    "fedbId": "Hamstring_Stretch"
+   }
+  },
+  "figure-four-stretch": {
+   "frames": {
+    "fedbId": "Ankle_On_The_Knee"
+   }
+  },
+  "lying-glute-stretch": {
+   "frames": {
+    "fedbId": "One_Knee_To_Chest"
+   }
+  },
+  "seated-straddle-stretch": {
+   "frames": {
+    "fedbId": "The_Straddle"
+   }
+  },
+  "wall-calf-stretch": {
+   "frames": {
+    "fedbId": "Calf_Stretch_Hands_Against_Wall"
+   }
+  },
+  "bent-knee-calf-stretch": {
+   "frames": {
+    "fedbId": "Standing_Soleus_And_Achilles_Stretch"
+   }
+  },
+  "walking-cooldown": {
+   "frames": {
+    "fedbId": "Walking_Treadmill"
+   }
+  },
+  "bike-cooldown": {
+   "frames": {
+    "fedbId": "Bicycling_Stationary"
+   }
+  },
+  "archer-push-up": {
+   "animation": {
+    "edbId": "A9qxk2F",
+    "gifUrl": "https://static.exercisedb.dev/media/A9qxk2F.gif",
+    "name": "archer push up"
+   }
+  },
+  "knee-push-up": {
+   "animation": {
+    "edbId": "ZOuKWir",
+    "gifUrl": "https://static.exercisedb.dev/media/ZOuKWir.gif",
+    "name": "Kneeling Push-Up"
+   }
+  },
+  "machine-lateral-raise": {
+   "animation": {
+    "edbId": "dRTfGZT",
+    "gifUrl": "https://static.exercisedb.dev/media/dRTfGZT.gif",
+    "name": "Machine Lateral Raise"
+   }
+  },
+  "dumbbell-y-raise": {
+   "animation": {
+    "edbId": "PbzNu7c",
+    "gifUrl": "https://static.exercisedb.dev/media/PbzNu7c.gif",
+    "name": "dumbbell incline y-raise"
+   }
+  },
+  "band-lat-pulldown": {
+   "animation": {
+    "edbId": "4LoWllp",
+    "gifUrl": "https://static.exercisedb.dev/media/4LoWllp.gif",
+    "name": "Band Fixed Back Close-Grip Pulldown"
+   }
+  },
+  "pendlay-row": {
+   "animation": {
+    "edbId": "r0z6xzQ",
+    "gifUrl": "https://static.exercisedb.dev/media/r0z6xzQ.gif",
+    "name": "barbell pendlay row"
+   }
+  },
+  "underhand-barbell-row": {
+   "animation": {
+    "edbId": "SzX3uzM",
+    "gifUrl": "https://static.exercisedb.dev/media/SzX3uzM.gif",
+    "name": "Barbell Reverse-Grip Bent Over Row"
+   }
+  },
+  "band-row": {
+   "animation": {
+    "edbId": "Nu7jqFE",
+    "gifUrl": "https://static.exercisedb.dev/media/Nu7jqFE.gif",
+    "name": "Band Seated Straight Back Row"
+   }
+  },
+  "band-curl": {
+   "animation": {
+    "edbId": "3omWx6P",
+    "gifUrl": "https://static.exercisedb.dev/media/3omWx6P.gif",
+    "name": "band alternating biceps curl"
+   }
+  },
+  "cable-kickback": {
+   "animation": {
+    "edbId": "vvNjDJS",
+    "gifUrl": "https://static.exercisedb.dev/media/vvNjDJS.gif",
+    "name": "Cable Two-Arm Triceps Kickback"
+   }
+  },
+  "sissy-squat": {
+   "animation": {
+    "edbId": "xdYPUtE",
+    "gifUrl": "https://static.exercisedb.dev/media/xdYPUtE.gif",
+    "name": "sissy squat"
+   }
+  },
+  "single-leg-calf-raise": {
+   "animation": {
+    "edbId": "0jp9Rlz",
+    "gifUrl": "https://static.exercisedb.dev/media/0jp9Rlz.gif",
+    "name": "Single-Leg Floor Calf Raise"
+   }
+  },
+  "kettlebell-swing": {
+   "animation": {
+    "edbId": "UHJlbu3",
+    "gifUrl": "https://static.exercisedb.dev/media/UHJlbu3.gif",
+    "name": "kettlebell swing"
+   }
+  },
+  "curtsy-lunge": {
+   "animation": {
+    "edbId": "gUjqdei",
+    "gifUrl": "https://static.exercisedb.dev/media/gUjqdei.gif",
+    "name": "curtsey squat"
+   }
+  },
+  "knee-side-plank": {
+   "animation": {
+    "edbId": "RKjH6Lt",
+    "gifUrl": "https://static.exercisedb.dev/media/RKjH6Lt.gif",
+    "name": "side bridge"
+   }
+  },
+  "mountain-climber": {
+   "animation": {
+    "edbId": "RJgzwny",
+    "gifUrl": "https://static.exercisedb.dev/media/RJgzwny.gif",
+    "name": "mountain climber"
+   }
+  },
+  "plank-shoulder-tap": {
+   "animation": {
+    "edbId": "yRpV5TC",
+    "gifUrl": "https://static.exercisedb.dev/media/yRpV5TC.gif",
+    "name": "shoulder tap"
+   }
+  },
+  "hanging-knee-raise": {
+   "animation": {
+    "edbId": "VEcJRo2",
+    "gifUrl": "https://static.exercisedb.dev/media/VEcJRo2.gif",
+    "name": "hanging leg hip raise"
+   }
+  },
+  "hanging-leg-raise": {
+   "animation": {
+    "edbId": "4Ml7QFO",
+    "gifUrl": "https://static.exercisedb.dev/media/4Ml7QFO.gif",
+    "name": "Hanging Straight-Leg Raise"
+   }
+  },
+  "toes-to-bar": {
+   "animation": {
+    "edbId": "nuBF9MO",
+    "gifUrl": "https://static.exercisedb.dev/media/nuBF9MO.gif",
+    "name": "hanging pike"
+   }
+  },
+  "standing-ab-wheel-rollout": {
+   "animation": {
+    "edbId": "KtRomty",
+    "gifUrl": "https://static.exercisedb.dev/media/KtRomty.gif",
+    "name": "Standing Wheel Rollout"
+   }
+  },
+  "band-pallof-press": {
+   "animation": {
+    "edbId": "9pa4H5m",
+    "gifUrl": "https://static.exercisedb.dev/media/9pa4H5m.gif",
+    "name": "band horizontal pallof press"
+   }
+  },
+  "overhead-carry": {
+   "animation": {
+    "edbId": "mWBtgmb",
+    "gifUrl": "https://static.exercisedb.dev/media/mWBtgmb.gif",
+    "name": "dumbbell single arm overhead carry"
+   }
+  },
+  "bear-crawl": {
+   "animation": {
+    "edbId": "0Yz8WdV",
+    "gifUrl": "https://static.exercisedb.dev/media/0Yz8WdV.gif",
+    "name": "bear crawl"
+   }
+  },
+  "kettlebell-snatch": {
+   "animation": {
+    "edbId": "aXcUyKb",
+    "gifUrl": "https://static.exercisedb.dev/media/aXcUyKb.gif",
+    "name": "Kettlebell Single-Arm Snatch"
+   }
+  },
+  "dumbbell-snatch": {
+   "animation": {
+    "edbId": "6pTkI99",
+    "gifUrl": "https://static.exercisedb.dev/media/6pTkI99.gif",
+    "name": "Dumbbell Single-Arm Snatch"
+   }
+  },
+  "barbell-thruster": {
+   "animation": {
+    "edbId": "f7Y9eDZ",
+    "gifUrl": "https://static.exercisedb.dev/media/f7Y9eDZ.gif",
+    "name": "barbell thruster"
+   }
+  },
+  "burpee": {
+   "animation": {
+    "edbId": "dK9394r",
+    "gifUrl": "https://static.exercisedb.dev/media/dK9394r.gif",
+    "name": "burpee"
+   }
+  },
+  "ski-erg": {
+   "animation": {
+    "edbId": "vpQaQkH",
+    "gifUrl": "https://static.exercisedb.dev/media/vpQaQkH.gif",
+    "name": "ski ergometer"
+   }
+  },
+  "ski-erg-intervals": {
+   "animation": {
+    "edbId": "vpQaQkH",
+    "gifUrl": "https://static.exercisedb.dev/media/vpQaQkH.gif",
+    "name": "ski ergometer"
+   }
+  },
+  "sprint-intervals": {
+   "animation": {
+    "edbId": "oLrKqDH",
+    "gifUrl": "https://static.exercisedb.dev/media/oLrKqDH.gif",
+    "name": "run"
+   }
+  },
+  "jumping-jacks": {
+   "animation": {
+    "edbId": "f9lVSSI",
+    "gifUrl": "https://static.exercisedb.dev/media/f9lVSSI.gif",
+    "name": "Astride Jumps"
+   }
+  },
+  "fast-feet": {
+   "animation": {
+    "edbId": "mweqJin",
+    "gifUrl": "https://static.exercisedb.dev/media/mweqJin.gif",
+    "name": "quick feet"
+   }
+  },
+  "frog-rock": {
+   "animation": {
+    "edbId": "2Dk4xQV",
+    "gifUrl": "https://static.exercisedb.dev/media/2Dk4xQV.gif",
+    "name": "rocking frog stretch"
+   }
+  },
+  "cossack-squat-mobility": {
+   "animation": {
+    "edbId": "GWoKnIm",
+    "gifUrl": "https://static.exercisedb.dev/media/GWoKnIm.gif",
+    "name": "Weighted Cossack Squats"
+   }
+  },
+  "warmup-jumping-jacks": {
+   "animation": {
+    "edbId": "f9lVSSI",
+    "gifUrl": "https://static.exercisedb.dev/media/f9lVSSI.gif",
+    "name": "Astride Jumps"
+   }
+  },
+  "butt-kicks-primer": {
+   "animation": {
+    "edbId": "oLrKqDH",
+    "gifUrl": "https://static.exercisedb.dev/media/oLrKqDH.gif",
+    "name": "run"
+   }
+  },
+  "scapular-push-up": {
+   "animation": {
+    "edbId": "jV65tKx",
+    "gifUrl": "https://static.exercisedb.dev/media/jV65tKx.gif",
+    "name": "scapula push-up"
+   }
+  },
+  "wrist-circles": {
+   "animation": {
+    "edbId": "2zNKRUB",
+    "gifUrl": "https://static.exercisedb.dev/media/2zNKRUB.gif",
+    "name": "wrist circles"
+   }
+  },
+  "calf-raise-primer": {
+   "animation": {
+    "edbId": "bJYHBIN",
+    "gifUrl": "https://static.exercisedb.dev/media/bJYHBIN.gif",
+    "name": "bodyweight standing calf raise"
+   }
+  },
+  "lat-stretch": {
+   "animation": {
+    "edbId": "chfnQnM",
+    "gifUrl": "https://static.exercisedb.dev/media/chfnQnM.gif",
+    "name": "back pec stretch"
+   }
+  },
+  "cobra-stretch": {
+   "animation": {
+    "edbId": "01qpYSe",
+    "gifUrl": "https://static.exercisedb.dev/media/01qpYSe.gif",
+    "name": "upward facing dog"
+   }
+  },
+  "butterfly-stretch": {
+   "animation": {
+    "edbId": "bWlZvXh",
+    "gifUrl": "https://static.exercisedb.dev/media/bWlZvXh.gif",
+    "name": "butterfly yoga pose"
+   }
+  }
+ }
+}

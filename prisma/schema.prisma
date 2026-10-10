@@ -1,0 +1,180 @@
+// FORGE persistence schema. Only user-specific data lives here; the exercise library is static on the client.
+// Prisma 7: the datasource URL is configured in prisma.config.ts.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ---------------------------------------------------------------------------
+// better-auth core tables
+// ---------------------------------------------------------------------------
+
+model User {
+  id            String    @id
+  name          String
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  sessions     Session[]
+  accounts     Account[]
+  profile      UserProfile?
+  workouts     Workout[]
+  performances ExercisePerformance[]
+  progress     UserProgress[]
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime? @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+// ---------------------------------------------------------------------------
+// Application tables
+// ---------------------------------------------------------------------------
+
+/// One row per user. Mirrors lib/domain/types.ts UserProfile (minus id/createdAt/updatedAt).
+model UserProfile {
+  userId                    String   @id
+  user                      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  goal                      String
+  gender                    String
+  weightKg                  Float
+  experience                String
+  trainingDaysPerWeek       Int
+  equipmentPreset           String
+  equipment                 String[]
+  durationPreferenceMinutes Int
+  units                     String
+  limitations               String[]
+  excludedExerciseIds       String[]
+  preferredExerciseIds      String[]
+  displayName               String?
+  createdAt                 DateTime @default(now())
+  /// Client-controlled last-write-wins timestamp.
+  updatedAt                 DateTime
+
+  @@map("user_profile")
+}
+
+/// A completed workout. `id` is the client-generated uuid so sync is idempotent.
+model Workout {
+  id              String   @id
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date            String
+  title           String
+  split           String
+  focus           String[]
+  goal            String
+  startedAt       DateTime
+  completedAt     DateTime
+  durationSeconds Int
+  completed       Boolean  @default(true)
+  engineVersion   Int
+  /// CompletedExercise[] exactly as the client produced it (authoritative for round-tripping).
+  exercises       Json
+  /// WorkoutTotals
+  totals          Json
+  /// PersonalRecord[]
+  personalRecords Json
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  /// Set when the user deleted the workout. The row stays as a tombstone so other devices learn
+  /// about the delete on their next pull; its performance rows are removed.
+  deletedAt       DateTime?
+
+  performances ExercisePerformance[]
+
+  @@index([userId, completedAt(sort: Desc)])
+  @@index([userId, updatedAt])
+  @@map("workout")
+}
+
+/// One row per logged set; rebuilt from Workout.exercises on every upsert. Powers server-side progress queries.
+model ExercisePerformance {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workoutId       String
+  workout         Workout  @relation(fields: [workoutId], references: [id], onDelete: Cascade)
+  exerciseId      String
+  setNumber       Int
+  weightKg        Float?
+  reps            Int?
+  durationSeconds Int?
+  rpe             Float?
+  completedAt     DateTime
+
+  @@index([userId, exerciseId, completedAt(sort: Desc)])
+  @@index([workoutId])
+  @@map("exercise_performance")
+}
+
+/// Per-exercise bests, recomputed server-side when workouts are upserted.
+model UserProgress {
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  exerciseId      String
+  bestWeightKg    Float?
+  bestReps        Int?
+  bestVolumeKg    Float?
+  bestE1rmKg      Float?
+  timesPerformed  Int       @default(0)
+  lastPerformedAt DateTime?
+  updatedAt       DateTime  @updatedAt
+
+  @@id([userId, exerciseId])
+  @@map("user_progress")
+}

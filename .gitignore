@@ -30,6 +30,7 @@ pnpm-debug.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -37,3 +38,12 @@ pnpm-debug.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# prisma generated client
+/lib/generated
+
+# local Claude launch config
+/.claude/launch.json
+
+# coach review samples and reports (generated)
+/.coach

@@ -4,126 +4,293 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ------------------------------------------------------------------ */
+/* Design tokens → Tailwind theme                                       */
+/* ------------------------------------------------------------------ */
 @theme inline {
-    --font-heading: var(--font-sans);
-    --font-sans: var(--font-sans);
-    --color-sidebar-ring: var(--sidebar-ring);
-    --color-sidebar-border: var(--sidebar-border);
-    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-    --color-sidebar-accent: var(--sidebar-accent);
-    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-    --color-sidebar-primary: var(--sidebar-primary);
-    --color-sidebar-foreground: var(--sidebar-foreground);
-    --color-sidebar: var(--sidebar);
-    --color-chart-5: var(--chart-5);
-    --color-chart-4: var(--chart-4);
-    --color-chart-3: var(--chart-3);
-    --color-chart-2: var(--chart-2);
-    --color-chart-1: var(--chart-1);
-    --color-ring: var(--ring);
-    --color-input: var(--input);
-    --color-border: var(--border);
-    --color-destructive: var(--destructive);
-    --color-accent-foreground: var(--accent-foreground);
-    --color-accent: var(--accent);
-    --color-muted-foreground: var(--muted-foreground);
-    --color-muted: var(--muted);
-    --color-secondary-foreground: var(--secondary-foreground);
-    --color-secondary: var(--secondary);
-    --color-primary-foreground: var(--primary-foreground);
-    --color-primary: var(--primary);
-    --color-popover-foreground: var(--popover-foreground);
-    --color-popover: var(--popover);
-    --color-card-foreground: var(--card-foreground);
-    --color-card: var(--card);
-    --color-foreground: var(--foreground);
-    --color-background: var(--background);
-    --radius-sm: calc(var(--radius) * 0.6);
-    --radius-md: calc(var(--radius) * 0.8);
-    --radius-lg: var(--radius);
-    --radius-xl: calc(var(--radius) * 1.4);
-    --radius-2xl: calc(var(--radius) * 1.8);
-    --radius-3xl: calc(var(--radius) * 2.2);
-    --radius-4xl: calc(var(--radius) * 2.6);
+  --font-heading: var(--font-sans);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Brand semantic colors (same in both themes unless overridden) */
+  --color-volt: var(--volt);
+  --color-volt-foreground: var(--volt-foreground);
+  /* Volt used as text or an icon on background/card. Fills keep using --volt. */
+  --color-volt-ink: var(--volt-ink);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-replace: var(--replace);
+  --color-replace-foreground: var(--replace-foreground);
+  --color-info: var(--info);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  --shadow-card: 0 1px 0 0 oklch(1 0 0 / 6%) inset, 0 20px 50px -20px oklch(0 0 0 / 60%);
+  --shadow-float: 0 12px 40px -12px oklch(0 0 0 / 55%);
+  --shadow-volt: 0 0 0 1px oklch(0.88 0.21 128 / 35%), 0 10px 40px -10px oklch(0.88 0.21 128 / 45%);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --animate-pulse-soft: pulse-soft 2.4s ease-in-out infinite;
+  --animate-rise: rise 0.5s var(--ease-out-expo) both;
+  --animate-pop: pop 0.45s var(--ease-spring) both;
+  /* Exercise demo photos: hold the start, crossfade to the finish, hold, crossfade back. */
+  --animate-demo-crossfade: demo-crossfade 2.8s ease-in-out infinite;
+
+  @keyframes pulse-soft {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.55; }
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes demo-crossfade {
+    0%, 38% { opacity: 0; }
+    50%, 88% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  @keyframes pop {
+    from { opacity: 0; transform: scale(0.85); }
+    to { opacity: 1; transform: scale(1); }
+  }
 }
 
+/* ------------------------------------------------------------------ */
+/* Light theme                                                          */
+/* ------------------------------------------------------------------ */
 :root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.145 0 0);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.708 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --radius: 0.625rem;
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.708 0 0);
+  --radius: 1rem;
+
+  --background: oklch(0.985 0.003 260);
+  --foreground: oklch(0.16 0.01 260);
+  --surface: oklch(1 0 0);
+  --surface-2: oklch(0.965 0.004 260);
+  --surface-3: oklch(0.93 0.005 260);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.16 0.01 260);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.16 0.01 260);
+  --primary: oklch(0.2 0.012 260);
+  --primary-foreground: oklch(0.985 0.003 260);
+  --secondary: oklch(0.95 0.005 260);
+  --secondary-foreground: oklch(0.2 0.012 260);
+  --muted: oklch(0.955 0.004 260);
+  --muted-foreground: oklch(0.5 0.012 260);
+  --accent: oklch(0.95 0.005 260);
+  --accent-foreground: oklch(0.2 0.012 260);
+  /* Text-safe: >= 4.5:1 on background, card and its own 10% tint. */
+  --destructive: oklch(0.53 0.21 25);
+  --border: oklch(0.9 0.006 260);
+  --input: oklch(0.9 0.006 260);
+  /* Opaque so focus rings reach 3:1 against background, card and surface-2. */
+  --ring: oklch(0.58 0.16 132);
+
+  --volt: oklch(0.8 0.2 130);
+  --volt-foreground: oklch(0.18 0.03 130);
+  /* The light volt fill is only 1.7:1 as text; this darker shade is >= 4.5:1. */
+  --volt-ink: oklch(0.5 0.15 130);
+  /* Text-safe: >= 4.5:1 on card and its own 15% tint. */
+  --success: oklch(0.5 0.14 145);
+  --success-foreground: oklch(0.99 0 0);
+  --replace: oklch(0.76 0.15 70);
+  --replace-foreground: oklch(0.22 0.04 70);
+  --info: oklch(0.6 0.14 240);
+
+  --chart-1: oklch(0.72 0.19 130);
+  --chart-2: oklch(0.6 0.14 240);
+  --chart-3: oklch(0.76 0.15 70);
+  --chart-4: oklch(0.55 0.012 260);
+  --chart-5: oklch(0.3 0.012 260);
+
+  --sidebar: oklch(0.985 0.003 260);
+  --sidebar-foreground: oklch(0.16 0.01 260);
+  --sidebar-primary: oklch(0.2 0.012 260);
+  --sidebar-primary-foreground: oklch(0.985 0.003 260);
+  --sidebar-accent: oklch(0.95 0.005 260);
+  --sidebar-accent-foreground: oklch(0.2 0.012 260);
+  --sidebar-border: oklch(0.9 0.006 260);
+  --sidebar-ring: oklch(0.62 0.17 132);
 }
 
+/* ------------------------------------------------------------------ */
+/* Dark theme (default)                                                 */
+/* ------------------------------------------------------------------ */
 .dark {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
+  --background: oklch(0.115 0.006 265);
+  --foreground: oklch(0.97 0.004 260);
+  --surface: oklch(0.155 0.007 265);
+  --surface-2: oklch(0.19 0.008 265);
+  --surface-3: oklch(0.235 0.009 265);
+  --card: oklch(0.165 0.007 265);
+  --card-foreground: oklch(0.97 0.004 260);
+  --popover: oklch(0.185 0.008 265);
+  --popover-foreground: oklch(0.97 0.004 260);
+  --primary: oklch(0.88 0.21 128);
+  --primary-foreground: oklch(0.16 0.03 128);
+  --secondary: oklch(0.235 0.009 265);
+  --secondary-foreground: oklch(0.97 0.004 260);
+  --muted: oklch(0.215 0.008 265);
+  --muted-foreground: oklch(0.68 0.012 260);
+  --accent: oklch(0.235 0.009 265);
+  --accent-foreground: oklch(0.97 0.004 260);
+  --destructive: oklch(0.7 0.19 25);
+  --border: oklch(1 0 0 / 9%);
+  --input: oklch(1 0 0 / 13%);
+  /* Opaque: ring-ring/50 composites to >= 4:1 on the dark surfaces. */
+  --ring: oklch(0.88 0.21 128);
+
+  --volt: oklch(0.88 0.21 128);
+  --volt-foreground: oklch(0.16 0.03 128);
+  --volt-ink: oklch(0.88 0.21 128);
+  --success: oklch(0.82 0.19 145);
+  --success-foreground: oklch(0.16 0.03 145);
+  --replace: oklch(0.82 0.16 75);
+  --replace-foreground: oklch(0.2 0.04 75);
+  --info: oklch(0.74 0.13 235);
+
+  --chart-1: oklch(0.88 0.21 128);
+  --chart-2: oklch(0.74 0.13 235);
+  --chart-3: oklch(0.82 0.16 75);
+  --chart-4: oklch(0.6 0.012 260);
+  --chart-5: oklch(0.4 0.012 260);
+
+  --sidebar: oklch(0.155 0.007 265);
+  --sidebar-foreground: oklch(0.97 0.004 260);
+  --sidebar-primary: oklch(0.88 0.21 128);
+  --sidebar-primary-foreground: oklch(0.16 0.03 128);
+  --sidebar-accent: oklch(0.235 0.009 265);
+  --sidebar-accent-foreground: oklch(0.97 0.004 260);
+  --sidebar-border: oklch(1 0 0 / 9%);
+  --sidebar-ring: oklch(0.88 0.21 128 / 60%);
 }
 
+/* ------------------------------------------------------------------ */
+/* Base                                                                 */
+/* ------------------------------------------------------------------ */
 @layer base {
   * {
-    @apply border-border outline-ring/50;
-    }
-  body {
-    @apply bg-background text-foreground;
-    }
+    @apply border-border outline-ring;
+  }
   html {
-    @apply font-sans;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    color-scheme: light dark;
+  }
+  html.dark { color-scheme: dark; }
+  html.light { color-scheme: light; }
+  body {
+    @apply bg-background text-foreground antialiased;
+    min-height: 100dvh;
+    overscroll-behavior-y: none;
+    font-feature-settings: "ss01", "cv11";
+  }
+  h1, h2, h3, h4 {
+    @apply font-heading tracking-tight;
+    text-wrap: balance;
+  }
+  button, [role="button"] {
+    touch-action: manipulation;
+  }
+  ::selection {
+    background: color-mix(in oklch, var(--volt) 35%, transparent);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
     }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Utilities                                                            */
+/* ------------------------------------------------------------------ */
+@utility pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+/* pb-safe sets the padding, it does not add to it: for "inset + 4rem" use pb-[calc(env(safe-area-inset-bottom,0px)+4rem)]. */
+@utility pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+@utility pl-safe { padding-left: env(safe-area-inset-left, 0px); }
+@utility pr-safe { padding-right: env(safe-area-inset-right, 0px); }
+@utility px-safe {
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+}
+/* Height of the bottom navigation bar plus the home-indicator inset. */
+@utility pb-nav { padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 5rem); }
+@utility h-screen-safe { height: 100dvh; }
+@utility min-h-screen-safe { min-height: 100dvh; }
+@utility touch-pan-y { touch-action: pan-y; }
+@utility touch-none { touch-action: none; }
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+/* Big tabular numbers for sets/reps/weights/timers. */
+@utility text-stat {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+@utility text-label {
+  font-size: 0.6875rem;
+  line-height: 1rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+/* Premium surface with hairline highlight. */
+@utility surface-card {
+  background: var(--card);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--border);
+}
+@utility glass {
+  background: color-mix(in oklch, var(--background) 72%, transparent);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
 }

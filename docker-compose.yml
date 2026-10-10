@@ -1,0 +1,13 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: gymapp
+      POSTGRES_PASSWORD: gymapp
+      POSTGRES_DB: gymapp
+    ports:
+      - "5432:5432"
+    volumes:
+      - gymapp-pg:/var/lib/postgresql/data
+volumes:
+  gymapp-pg:

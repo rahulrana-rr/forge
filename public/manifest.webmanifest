@@ -1,0 +1,31 @@
+{
+  "name": "FORGE",
+  "short_name": "FORGE",
+  "description": "Your daily workout, programmed for you. Open the app, see the exercise, swipe to finish.",
+  "id": "/",
+  "start_url": "/today",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#040507",
+  "theme_color": "#040507",
+  "categories": [
+    "health",
+    "fitness",
+    "sports"
+  ],
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/apple-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
