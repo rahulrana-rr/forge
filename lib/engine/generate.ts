@@ -2,7 +2,7 @@
  * Workout generation orchestrator. Pure: every decision flows from the input and the seed.
  */
 import { muscleGroupOf } from "@/lib/exercises"
-import { DEFAULT_LIBRARY, type Library } from "./library"
+import { DEFAULT_LIBRARY, generationPool, type Library } from "./library"
 import {
   ALL_MUSCLE_GROUPS,
   MUSCLE_GROUP_LABELS,
@@ -1299,7 +1299,8 @@ export interface GenerateOptions {
 
 /** Generate today's workout. `lib` defaults to the static library; tests may inject fixtures. */
 export function generateWorkout(input: EngineInput, lib: Library = DEFAULT_LIBRARY, options: GenerateOptions = {}): Workout {
-  const pool = lib.all
+  // Assigned-program steps (tag "program_only") are never generated.
+  const pool = generationPool(lib)
   const { profile, date } = input
   const seed = (input.seed ?? defaultSeed(profile.id, date)) >>> 0
   const rng = createRng(seed)

@@ -21,8 +21,8 @@ import { prisma } from "@/lib/prisma"
 
 const DAY_SECONDS = 60 * 60 * 24
 const HOUR_SECONDS = 60 * 60
-/** better-auth's magic-link default, stated here because the email quotes it. */
-const MAGIC_LINK_TTL_SECONDS = 5 * 60
+/** 15 minutes (better-auth's default is 5): long enough to fish the email out of a spam folder. The email quotes it. */
+const MAGIC_LINK_TTL_SECONDS = 15 * 60
 const VERIFY_EMAIL_TTL_SECONDS = HOUR_SECONDS
 const RESET_PASSWORD_TTL_SECONDS = HOUR_SECONDS
 
@@ -143,7 +143,7 @@ async function sendMagicLink({
     to: email,
     subject: "Your FORGE sign-in link",
     heading: "Sign in to FORGE",
-    intro: "Tap the button to sign in. The link expires in 5 minutes.",
+    intro: "Tap the button to sign in. The link expires in 15 minutes and works once.",
     action: { label: "Sign in", url },
     footer: IGNORE_FOOTER,
     devLog: `Magic link for ${email}: ${url}`,

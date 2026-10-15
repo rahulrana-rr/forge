@@ -84,6 +84,7 @@ function row(id: string, updatedAt: Date, completedAt = updatedAt): WorkoutRow {
     exercises: [],
     totals: {},
     personalRecords: [],
+    programDay: null,
     createdAt: updatedAt,
     updatedAt,
     deletedAt: null,

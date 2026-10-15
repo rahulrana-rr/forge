@@ -59,6 +59,7 @@ lib/
   store/                     zustand stores (types.ts = contract, index.ts exports hooks)
   persistence/               localStorage + IndexedDB adapters
   sync/                      API contract (types.ts), client (client.ts), queue/flush
+  programs/                  Assigned programs: static definitions, builder, assignment store
   auth.ts, auth-client.ts, prisma.ts
   ids.ts, dates.ts, units.ts, utils.ts
 prisma/schema.prisma, prisma.config.ts

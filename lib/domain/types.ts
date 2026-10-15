@@ -110,6 +110,24 @@ export interface CompletedExercise {
    * outgrown itself, so it no longer holds its slot for consistency. Optional (coach round 2, R12).
    */
   suggestedExerciseId?: string | null
+  /**
+   * The exercise the plan put in this slot before any swap (WorkoutExercise.replacedFromExerciseId,
+   * else the exercise itself). Lets the weekly review tell a substitution from the plan. Optional:
+   * absent on workouts logged before it existed.
+   */
+  plannedExerciseId?: string | null
+}
+
+/** Which assigned-program day a completed workout was (Workout.program at completion). */
+export interface CompletedWorkoutProgram {
+  /** Program id (lib/programs registry). */
+  id: string
+  dayKey: string
+  week: number
+  /** The assignment's start date ("YYYY-MM-DD"). */
+  startDate: string
+  /** The coach-approved plan revision the day followed; null = the program as assigned. */
+  revisionId: string | null
 }
 
 export type WorkoutPhase = "warmup" | "main" | "cooldown"
@@ -178,6 +196,11 @@ export interface CompletedWorkout {
   personalRecords: PersonalRecord[]
   /** Engine metadata for debugging/regeneration. */
   engineVersion: number
+  /**
+   * The assigned-program day this workout was, so the weekly review compares it with what was
+   * prescribed. Absent for engine workouts and for workouts logged before it was recorded.
+   */
+  programDay?: CompletedWorkoutProgram | null
   /**
    * Whether the backend has this workout. (Completed workouts with zero completed main-phase
    * exercises are not saved: warm-up drills and stretches alone are not a workout.)

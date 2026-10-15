@@ -27,12 +27,27 @@ const SEVERITY_TONE: Record<CoachIssue["severity"], string> = {
 
 /**
  * The coach's verdict on today's plan, shown above "Start workout". It never implies approval
- * without a review: pending, offline, not configured and errors all read as "not reviewed".
+ * without a review: pending, offline, not configured and errors all read as "not reviewed". An
+ * assigned program's day shows the program's approval and the week's rule instead.
  */
 export function CoachPanel({ workoutId, className }: { workoutId: string; className?: string }) {
   const entry = useCoachStore((s) => s.entries[workoutId]) as CoachEntry | undefined
   const hydrated = useCoachStore((s) => s.hydrated)
   const status = useWorkoutStore((s) => s.active?.status)
+  const program = useWorkoutStore((s) => (s.active?.workout.id === workoutId ? (s.active.workout.program ?? null) : null))
+
+  // An assigned program was reviewed as a whole before it was assigned: no per-workout review.
+  if (program) {
+    return (
+      <Shell className={className} tone="volt" icon={<ShieldCheckIcon />} title={`Coach-approved program · Week ${program.week} of ${program.weeks}`}>
+        <p className="text-sm leading-snug text-foreground/90">
+          {program.blockRule ?? "Follow the plan as written."}
+        </p>
+        <p className="mt-2 text-xs text-muted-foreground">Gated steps move up after 2 clean sessions: swipe left on a skill card to take the next step.</p>
+      </Shell>
+    )
+  }
+
   if (!hydrated) return null
 
   const retry = () => useCoachStore.getState().ensureReview(true)

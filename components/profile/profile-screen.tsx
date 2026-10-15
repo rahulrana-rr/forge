@@ -12,6 +12,7 @@ import { DataSection } from "./data-section"
 import { EquipmentSection } from "./equipment-section"
 import { FavouritesSection } from "./favourites-section"
 import { LimitationsSection } from "./limitations-section"
+import { ProgramSection } from "./program-section"
 import { TrainingSection } from "./training-section"
 
 export function ProfileScreen({ version }: { version: string }) {
@@ -38,6 +39,7 @@ export function ProfileScreen({ version }: { version: string }) {
       <PageHeader title="Profile" subtitle={profile.name?.trim() || undefined} />
       <div className="flex flex-col gap-8 animate-rise">
         <AccountCard />
+        <ProgramSection />
         <TrainingSection profile={profile} />
         <EquipmentSection profile={profile} />
         <LimitationsSection profile={profile} />

@@ -19,7 +19,11 @@ function createPrismaClient(): PrismaClient {
       "DATABASE_URL is not set. Copy .env.example to .env and point it at your Postgres database."
     )
   }
-  const adapter = new PrismaPg({ connectionString })
+  // pg already treats require/prefer/verify-ca as verify-full and warns on every cold start; say
+  // verify-full explicitly (hosted URLs such as Neon's use sslmode=require) to keep that behaviour.
+  const adapter = new PrismaPg({
+    connectionString: connectionString.replace(/([?&]sslmode=)(require|prefer|verify-ca)\b/, "$1verify-full"),
+  })
   return new PrismaClient({ adapter })
 }
 

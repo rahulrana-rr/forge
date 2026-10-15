@@ -22,6 +22,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { signOut, useSession } from "@/lib/auth-client"
 import { formatDateKey } from "@/lib/dates"
 import { haptic } from "@/lib/haptics"
+import { useProgramStore } from "@/lib/programs/store"
 import {
   useHistoryStore,
   useProfileStore,
@@ -167,6 +168,7 @@ export function AccountCard() {
       // The sync store keeps the cursor with the account that owns the local data: signing back in
       // to the same account resumes it, and a different account starts over with a full pull.
       setSignedIn(false)
+      useProgramStore.getState().clear()
       if (removeData) {
         useWorkoutStore.getState().discard()
         useHistoryStore.getState().clearAll()

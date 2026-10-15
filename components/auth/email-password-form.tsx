@@ -35,6 +35,8 @@ export function EmailPasswordForm({ mode }: { mode: AuthMode }) {
   const [verifyEmail, setVerifyEmail] = useState<string | null>(null)
   const [notice, setNotice] = useState<string | null>(null)
   const [resending, setResending] = useState(false)
+  /** Sign-in failed in a way a one-time email link gets past (wrong password, unverified email). */
+  const [offerLink, setOfferLink] = useState(false)
 
   function validate(): boolean {
     const next: FieldErrors = {}
@@ -48,6 +50,8 @@ export function EmailPasswordForm({ mode }: { mode: AuthMode }) {
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setFormError(null)
+    setNotice(null)
+    setOfferLink(false)
     if (!validate()) {
       haptic("warning")
       return
@@ -61,9 +65,13 @@ export function EmailPasswordForm({ mode }: { mode: AuthMode }) {
           // An unverified account: better-auth has just re-sent the confirmation link.
           setFormError(
             result.error.code === "EMAIL_NOT_VERIFIED"
-              ? `Confirm your email first. We sent a new link to ${trimmedEmail}.`
+              ? `Confirm your email first. We sent a new link to ${trimmedEmail} (check spam too).`
               : describeAuthError(result.error, "Couldn't sign you in.")
           )
+          // A forgotten password or an unconfirmed address is the usual cause: a sign-in link fixes
+          // both, because opening it proves the mailbox and confirms the email.
+          const code = result.error.code
+          setOfferLink(code === "EMAIL_NOT_VERIFIED" || code === "INVALID_EMAIL_OR_PASSWORD" || code === "INVALID_PASSWORD")
           haptic("warning")
           return
         }
@@ -117,6 +125,28 @@ export function EmailPasswordForm({ mode }: { mode: AuthMode }) {
         return
       }
       setNotice(`If ${trimmedEmail} has a FORGE account, a link to choose a new password is on its way.`)
+    } catch (err) {
+      setFormError(describeThrown(err))
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  async function onSendLink() {
+    const trimmedEmail = email.trim()
+    if (!isValidEmail(trimmedEmail)) return
+    setBusy(true)
+    setFormError(null)
+    try {
+      const result = await signIn.magicLink({ email: trimmedEmail, callbackURL: AFTER_AUTH_URL, errorCallbackURL: "/sign-in" })
+      if (result.error) {
+        setFormError(describeAuthError(result.error, "Couldn't send a sign-in link."))
+        haptic("warning")
+        return
+      }
+      haptic("success")
+      setOfferLink(false)
+      setNotice(`Sign-in link sent to ${trimmedEmail}. Open it on this device within 15 minutes. Not there? Check spam.`)
     } catch (err) {
       setFormError(describeThrown(err))
     } finally {
@@ -232,6 +262,11 @@ export function EmailPasswordForm({ mode }: { mode: AuthMode }) {
         <p role="alert" className="rounded-xl bg-destructive/10 px-4 py-3 text-sm font-medium text-destructive">
           {formError}
         </p>
+      ) : null}
+      {offerLink ? (
+        <BigButton type="button" tone="neutral" onClick={onSendLink} disabled={busy}>
+          Email me a sign-in link instead
+        </BigButton>
       ) : null}
       <BigButton type="submit" disabled={busy} className="mt-2">
         {busy ? <Spinner className="size-5" /> : null}

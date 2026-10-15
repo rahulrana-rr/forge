@@ -49,6 +49,8 @@ Copy `.env.example` to `.env`. `.env*` files are git-ignored, except the `.env.e
 | `NEXT_PUBLIC_AUTH_GOOGLE`  | no       | `"1"` to show the Google button in the UI. Keep in sync with the two values above.                         |
 | `RESEND_API_KEY`           | prod     | Resend API key for auth emails: sign-up verification, password reset and magic links. Required in production (sign-up fails without it). Development logs the links to the server console. |
 | `EMAIL_FROM`               | no       | Sender for auth emails, e.g. `FORGE <noreply@yourdomain.com>` (must be a verified Resend domain).          |
+| `PROGRAM_ASSIGNMENTS`      | no       | Server-only JSON assigning a program to a user by email (see [Assigned programs](#assigned-programs)).    |
+| `NEXT_PUBLIC_DEV_PROGRAM_ASSIGNMENT` | no | Development only: one assignment as JSON, so a guest can preview a program locally. Ignored in production builds. |
 
 ## Database
 
@@ -236,6 +238,28 @@ with issues, per-exercise notes and a corrected plan.
   and rate limited in memory (15 per hour per user or IP); use a shared limiter in production.
 - **Development.** `.claude/agents/coach.md` defines the same reviewer as a Claude Code agent.
   `pnpm coach:samples` writes the exact coach inputs for 12 profiles to `.coach/samples/` for review.
+
+## Assigned programs
+
+A user can follow a fixed, coach-approved program instead of the engine's generated workouts.
+Programs are static data in `lib/programs/` (no personal data: a generic id and title only);
+`returning-lifter-calisthenics-7wk` is the first. `lib/programs/build.ts` turns the scheduled day
+for the date's program week into a normal workout, so cards, demos, set logging, the rest timer,
+history, progress, sync, swaps and undo all work unchanged. Loads come from the engine's
+progression; after the last week the program repeats from its repeat week.
+
+- **Assigning.** Set `PROGRAM_ASSIGNMENTS` on the server, e.g.
+  `{"<email>":{"programId":"returning-lifter-calisthenics-7wk","startDate":"YYYY-MM-DD"}}`.
+  `/api/me` returns only the caller's own entry, and only for a verified email. The client keeps it
+  on the device (works offline) and clears it on sign-out. There is no UI to edit assignments.
+- **Previewing.** In development, `NEXT_PUBLIC_DEV_PROGRAM_ASSIGNMENT` (one assignment as JSON)
+  applies the program to a guest.
+- **Review.** Program days are already coach-approved: they are not sent to the coach review, and
+  Today shows "Coach-approved program · Week N of 7" with the week's rule. Profile shows the
+  program, its block rules and habits.
+- **Steps.** Gated skill progressions (handstand, L-sit, leg raise, assisted pull-ups and dips) are
+  steps: a left swipe takes the next step, and the card starts on the step completed most recently.
+  Exercises tagged `program_only` are never generated or offered by the engine.
 
 ## API
 

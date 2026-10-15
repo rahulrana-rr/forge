@@ -225,6 +225,16 @@ export const completedExerciseSchema = z.object({
   prescribedTempo: z.string().max(16).nullable().optional(),
   prescribedRestSeconds: upTo(MAX_SET_SECONDS).nullable().optional(),
   suggestedExerciseId: exerciseId.nullable().optional(),
+  plannedExerciseId: exerciseId.nullable().optional(),
+})
+
+/** Which assigned-program day a workout was (CompletedWorkout.programDay). */
+export const completedWorkoutProgramSchema = z.object({
+  id: z.string().min(1).max(64),
+  dayKey: z.string().min(1).max(64),
+  week: intUpTo(10_000),
+  startDate: dateKey,
+  revisionId: id.nullable(),
 })
 
 export const workoutTotalsSchema = z.object({
@@ -260,6 +270,7 @@ export const completedWorkoutSchema = z.looseObject({
   totals: workoutTotalsSchema,
   personalRecords: z.array(personalRecordSchema).max(500),
   engineVersion: intUpTo(MAX_ENGINE_VERSION),
+  programDay: completedWorkoutProgramSchema.nullable().optional(),
   /** Ignored on input; the server always answers with synced: true. */
   synced: z.boolean().optional(),
 })

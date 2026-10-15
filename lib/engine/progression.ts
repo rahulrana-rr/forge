@@ -43,6 +43,11 @@ function floorLoad(kg: number, units: Units, kind: LoadKind): number {
   return toKg(Math.floor(fromKg(kg, units) / step + 1e-9) * step, units)
 }
 
+/** A rep window for a note: "8–12", or "5" when both ends match. */
+function repText(reps: readonly [number, number]): string {
+  return reps[0] === reps[1] ? `${reps[0]}` : `${reps[0]}–${reps[1]}`
+}
+
 /** Epley estimated one-rep max. */
 export function e1rm(weightKg: number, reps: number): number {
   return weightKg * (1 + reps / 30)
@@ -287,7 +292,7 @@ export function recommendWeight(
 
   if (lastWindow !== null && changed && !overlaps(lastWindow, reps)) {
     const weight = translatedLoad(weighted, reps, rir, units, kind)
-    return { weightKg: round2(weight), note: `Rep range changed: ${formatWeight(weight, units)} targets ${reps[0]}–${reps[1]} reps.` }
+    return { weightKg: round2(weight), note: `Rep range changed: ${formatWeight(weight, units)} targets ${repText(reps)} reps.` }
   }
 
   // Judge last session by the window it was prescribed: today's may differ by a rep or two.
@@ -339,7 +344,7 @@ export function recommendWeight(
   if (missed && changed && lastReps.some((r) => r < reps[0])) {
     const weight = Math.min(lastWeight, translatedLoad(weighted, reps, rir, units, kind))
     if (weight < lastWeight) {
-      return { weightKg: round2(weight), note: `Rep range changed: ${formatWeight(weight, units)} targets ${reps[0]}–${reps[1]} reps.` }
+      return { weightKg: round2(weight), note: `Rep range changed: ${formatWeight(weight, units)} targets ${repText(reps)} reps.` }
     }
   }
   if (missed) {
@@ -447,6 +452,11 @@ interface FindWeightContext {
   heavy: boolean
   /** Trunk work (core spec C15): no build-up sets; the first working set sets the load. */
   trunk: boolean
+  /**
+   * The slot's own RIR when it is below the floor a load being found is held to: the note says the
+   * floor applies this first time and names the target for the sessions after it.
+   */
+  laterRir?: number | null
 }
 
 /**
@@ -456,18 +466,20 @@ interface FindWeightContext {
  * (core spec C15) has no build-up: the first set sets the weight, held to the reps in reserve when
  * the slot has an RIR target (`rir` set) and to position when it does not (`rir` null).
  */
-function findWorkingWeightNote(reps: [number, number], rir: number | null, { bar, band, heavy, trunk }: FindWeightContext): string {
-  const target = `until ${reps[0]}–${reps[1]} reps leave about ${rir ?? 3} in reserve`
+function findWorkingWeightNote(reps: [number, number], rir: number | null, { bar, band, heavy, trunk, laterRir = null }: FindWeightContext): string {
+  const first = laterRir != null ? " this first time" : ""
+  const later = laterRir != null ? `; from next session work at RIR ${laterRir}` : ""
+  const target = `until ${repText(reps)} reps leave about ${rir ?? 3} in reserve${first}`
   if (band) {
-    return `${FIND_BAND_PREFIX} and move to a stronger one ${target}, then do your working sets with it. When every set reaches the top of the range, use a heavier band or stand farther from the anchor.`
+    return `${FIND_BAND_PREFIX} and move to a stronger one ${target}, then do your working sets with it${later}. When every set reaches the top of the range, use a heavier band or stand farther from the anchor.`
   }
   if (trunk) {
     const effort = rir === null ? "without losing position" : target
-    return `${FIND_WORKING_WEIGHT_PREFIX}the first set sets the weight: pick a load you control for every rep with a 2 s pause ${effort}, then keep it for your working sets and log it.`
+    return `${FIND_WORKING_WEIGHT_PREFIX}the first set sets the weight: pick a load you control for every rep with a 2 s pause ${effort}, then keep it for your working sets and log it${rir === null ? "" : later}.`
   }
   const start = bar ? "start with the empty bar" : "start light"
   const sets = heavy ? HEAVY_BUILD_UP_SETS : "1–2"
-  return `${FIND_WORKING_WEIGHT_PREFIX}${start} and add weight over ${sets} build-up sets ${target}, then do your working sets at that load and log it.`
+  return `${FIND_WORKING_WEIGHT_PREFIX}${start} and add weight over ${sets} build-up sets ${target}, then do your working sets at that load and log it${later}.`
 }
 
 /**
@@ -510,7 +522,9 @@ export function planLoad(
     // A trunk drill with no RIR target (anti-movement work, core spec C14) is held to position.
     const rir = trunk && options.rir === null ? null : Math.max(MIN_RECALIBRATION_RIR, options.rir ?? 3)
     const heavy = exercise.warmupRequired && profile.experience !== "beginner"
-    return { weightKg: null, note: findWorkingWeightNote(reps, rir, { bar, band: estimate.band ?? false, heavy, trunk }), weightSource: null }
+    // The floor holds this first time only; a lower target applies once the load is known.
+    const laterRir = options.rir != null && options.rir < MIN_RECALIBRATION_RIR ? options.rir : null
+    return { weightKg: null, note: findWorkingWeightNote(reps, rir, { bar, band: estimate.band ?? false, heavy, trunk, laterRir }), weightSource: null }
   }
   if (reps && exercise.loadType === "external" && exercise.tags?.some((t) => TECHNIQUE_LIMITED_TAGS.includes(t))) {
     return { weightKg: null, note: techniqueLoadNote(bar), weightSource: null }
@@ -684,7 +698,7 @@ export function progressUnloaded(
     }
     const sets = atCeiling ? carriedSets : rx.sets
     if (window === base && sets === rx.sets) return null
-    const note = missed ? `Same ${window[0]}–${window[1]} reps: own every rep before moving on.` : `Aim for ${window[1]} reps on every set.`
+    const note = missed ? `Same ${repText(window)} reps: own every rep before moving on.` : `Aim for ${window[1]} reps on every set.`
     return { sets, reps: window, durationSeconds: null, note, nextExerciseId: null }
   }
 

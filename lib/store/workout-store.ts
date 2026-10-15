@@ -41,6 +41,14 @@ import { useProfileStore } from "./profile-store"
 import { useHistoryStore } from "./history-store"
 import { useSyncStore } from "@/lib/sync/sync-store"
 import { onRehydrate, type Hydratable } from "./hydration"
+import {
+  programPlanKey,
+  programReplacementCandidates,
+  programWorkoutFor,
+  replaceProgramExercise,
+  workoutPlanKey,
+} from "@/lib/programs/build"
+import { activeAssignment, useProgramStore } from "@/lib/programs/store"
 
 export const WORKOUT_STORAGE_KEY = "forge:active-workout"
 export const WORKOUT_SCHEMA_VERSION = 1
@@ -88,6 +96,32 @@ function buildEngineInput(
     now: new Date().toISOString(),
     ...(seed !== undefined ? { seed } : {}),
   }
+}
+
+/**
+ * The day's plan: the assigned program's day when the user has an assignment that covers the
+ * date (lib/programs), otherwise the engine's generated workout.
+ */
+function planWorkout(profile: UserProfile, date: string, seed?: number): Workout {
+  const input = buildEngineInput(profile, date, seed)
+  return programWorkoutFor(activeAssignment(), input) ?? generateWorkout(input)
+}
+
+/** Whether a not-yet-started plan comes from a different source than the assignment now gives. */
+function planIsStale(workout: Workout): boolean {
+  return programPlanKey(activeAssignment(), workout.date) !== workoutPlanKey(workout)
+}
+
+/** Swap one slot: program workouts keep the program's dose and step order (lib/programs/build.ts). */
+function replaceSlot(
+  workout: Workout,
+  slotId: string,
+  input: EngineInput,
+  options: { exclude?: string[]; withExerciseId?: string }
+): Workout | null {
+  return workout.program
+    ? replaceProgramExercise(workout, slotId, input, options)
+    : replaceExercise(workout, slotId, input, options)
 }
 
 function pendingLog(slot: WorkoutExercise, tried?: string[]): ExerciseLog {
@@ -231,6 +265,18 @@ function buildCompleted(
     totals,
     personalRecords,
     engineVersion: workout.engineVersion,
+    // The program day (and approved revision) it was, so the weekly review compares like with like.
+    ...(workout.program
+      ? {
+          programDay: {
+            id: workout.program.id,
+            dayKey: workout.program.dayKey,
+            week: workout.program.week,
+            startDate: workout.program.startDate,
+            revisionId: null,
+          },
+        }
+      : {}),
     synced: false,
   }
 }
@@ -272,6 +318,8 @@ function toCompletedExercises(
       prescribedTempo: slot.tempo ?? null,
       prescribedRestSeconds: slot.restSeconds,
       suggestedExerciseId: slot.suggestedExerciseId ?? null,
+      // The plan's exercise for the slot before any swap, so a substitution is visible later.
+      plannedExerciseId: slot.replacedFromExerciseId ?? slot.exerciseId,
     })
   }
   return out
@@ -321,7 +369,7 @@ export const useWorkoutStore = create<WorkoutStore>()(
         date: string,
         seed?: number
       ): void {
-        const workout = generateWorkout(buildEngineInput(profile, date, seed))
+        const workout = planWorkout(profile, date, seed)
         set({ active: createActive(workout), timer: IDLE_TIMER })
       }
 
@@ -400,6 +448,9 @@ export const useWorkoutStore = create<WorkoutStore>()(
               // it started, so the next day still gets its own workout.
               if (sessionDay(active) === today) return
             } else if (active.workout.date === today) {
+              // A plan not started yet follows the assignment: a program assigned (or removed)
+              // after it was planned replaces it.
+              if (active.status === "ready" && planIsStale(active.workout)) generateFor(profile, today)
               return
             } else if (isInProgress(active)) {
               // In progress from an earlier day. Touched recently: keep it, so the user can resume
@@ -530,7 +581,7 @@ export const useWorkoutStore = create<WorkoutStore>()(
           const tried = cur.log.triedExerciseIds ?? [cur.slot.exerciseId]
           const exclude = Array.from(new Set([...tried, cur.slot.exerciseId]))
           const replaced = profile
-            ? replaceExercise(
+            ? replaceSlot(
                 active.workout,
                 cur.slot.slotId,
                 buildEngineInput(profile, active.workout.date),
@@ -552,7 +603,7 @@ export const useWorkoutStore = create<WorkoutStore>()(
           const profile = useProfileStore.getState().profile
           if (!profile) return
           const active = forToday(cur.active)
-          const replaced = replaceExercise(
+          const replaced = replaceSlot(
             active.workout,
             cur.slot.slotId,
             buildEngineInput(profile, active.workout.date),
@@ -570,7 +621,10 @@ export const useWorkoutStore = create<WorkoutStore>()(
           const cur = current()
           const profile = useProfileStore.getState().profile
           if (!cur || !profile) return []
-          return replacementCandidates(
+          const candidates = cur.active.workout.program
+            ? programReplacementCandidates
+            : replacementCandidates
+          return candidates(
             cur.active.workout,
             cur.slot.slotId,
             buildEngineInput(profile, cur.active.workout.date),
@@ -851,4 +905,17 @@ export const useWorkoutStore = create<WorkoutStore>()(
 // it, so this tab's next write, including a rest timer ending on its own, cannot erase that work.
 onLocalStorageKeyChange(WORKOUT_STORAGE_KEY, () => {
   void useWorkoutStore.persist.rehydrate()
+})
+
+// An assignment that arrives (or is removed) after today's plan was made replaces the plan, as
+// long as it has not been started.
+useProgramStore.subscribe((state, previous) => {
+  if (state.assignment === previous.assignment) return
+  const active = useWorkoutStore.getState().active
+  const profile = useProfileStore.getState().profile
+  if (!active || !profile || active.status !== "ready" || !planIsStale(active.workout)) return
+  useWorkoutStore.setState({
+    active: createActive(planWorkout(profile, active.workout.date)),
+    timer: IDLE_TIMER,
+  })
 })

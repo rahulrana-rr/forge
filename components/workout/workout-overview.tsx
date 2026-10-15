@@ -59,8 +59,10 @@ export function WorkoutOverview({
   const historyWorkouts = useHistoryStore((s) => s.workouts)
   const [detailsId, setDetailsId] = useState<string | null>(null)
 
+  const program = workout.program ?? null
   const reasons = useMemo(() => {
-    if (!input) return []
+    // A program day is not chosen by the engine, so the engine's reasons do not apply.
+    if (!input || workout.program) return []
     try {
       return explainWorkout(workout, input)
     } catch {
@@ -107,7 +109,7 @@ export function WorkoutOverview({
           subtitle={
             resume
               ? `Still in progress from ${formatDateKey(workout.date)}`
-              : "Today's workout"
+              : (program?.title ?? "Today's workout")
           }
           action={
             <div className="flex items-center gap-1 rounded-full bg-surface-2 px-3 py-1.5 text-sm">
@@ -157,7 +159,7 @@ export function WorkoutOverview({
 
         {reasons.length > 0 || (workout.notes?.length ?? 0) > 0 ? (
           <section className="flex flex-col gap-2 rounded-3xl p-4 surface-card">
-            <SectionLabel>Why this workout</SectionLabel>
+            <SectionLabel>{program ? "This week" : "Why this workout"}</SectionLabel>
             <ul className="flex flex-col gap-1.5">
               {[...reasons, ...(workout.notes ?? [])].map((line) => (
                 <li key={line} className="flex gap-2 text-sm leading-snug">
@@ -253,7 +255,8 @@ export function WorkoutOverview({
               End workout
             </BigButton>
           ) : null}
-          {mode === "start" ? (
+          {/* A program day is fixed: there is no different workout to shuffle to. */}
+          {mode === "start" && !program ? (
             <Tooltip>
               <TooltipTrigger
                 render={

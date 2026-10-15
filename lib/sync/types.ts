@@ -14,6 +14,11 @@ export interface MeResponse {
   user: { id: string; email: string; name: string | null; image: string | null }
   /** null until the client has pushed a profile. */
   profile: UserProfile | null
+  /**
+   * The caller's assigned program (lib/programs), or null. Optional: absent from servers that
+   * predate assigned programs, which the client treats as null.
+   */
+  program?: { programId: string; startDate: string } | null
 }
 
 export type PutMeRequest = Omit<

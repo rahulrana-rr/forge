@@ -7,6 +7,7 @@
 import type {
   CompletedExercise,
   CompletedWorkout,
+  CompletedWorkoutProgram,
   DurationPreference,
   EquipmentPreset,
   ExerciseProgress,
@@ -119,6 +120,7 @@ export function workoutRowToDomain(row: WorkoutRow): CompletedWorkout {
     totals: fromJson<WorkoutTotals>(row.totals),
     personalRecords: fromJson<PersonalRecord[]>(row.personalRecords),
     engineVersion: row.engineVersion,
+    ...(row.programDay ? { programDay: fromJson<CompletedWorkoutProgram>(row.programDay) } : {}),
     synced: true,
   }
 }
@@ -143,6 +145,8 @@ export function workoutInputToColumns(
     exercises: toJson(input.exercises),
     totals: toJson(input.totals),
     personalRecords: toJson(input.personalRecords),
+    // Absent leaves the column as it is (null on create): older clients never send it.
+    programDay: input.programDay ? toJson(input.programDay) : undefined,
   }
 }
 

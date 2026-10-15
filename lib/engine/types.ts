@@ -83,6 +83,29 @@ export interface Workout {
   engineVersion: number
   /** Optional engine remarks for the UI, e.g. when fewer than 3 main exercises could be filled. */
   notes?: string[]
+  /**
+   * Set when the workout is a day of an assigned, coach-approved program (lib/programs) rather
+   * than an engine-generated one. Such workouts are not sent for coach review. Absent or null on
+   * every generated workout.
+   */
+  program?: WorkoutProgramInfo | null
+}
+
+/** Which assigned program day a workout is (Workout.program). */
+export interface WorkoutProgramInfo {
+  /** Program id (lib/programs registry). */
+  id: string
+  /** Program title for display. */
+  title: string
+  /** The day of the program, a key of ProgramDefinition.days (e.g. "upper-a"). */
+  dayKey: string
+  /** Program week this day belongs to, 1..weeks (later weeks repeat from the program's repeat week). */
+  week: number
+  weeks: number
+  /** The assignment's start date (YYYY-MM-DD). */
+  startDate: string
+  /** The week's block rule, one line. */
+  blockRule: string | null
 }
 
 export interface EngineInput {

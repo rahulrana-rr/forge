@@ -7,6 +7,7 @@
  * - A review is requested only while the workout is still "ready" (not started).
  * - Corrections are applied only if the plan is still exactly the one that was reviewed, and the
  *   pre-coach plan is kept so the user can switch back.
+ * - Assigned-program workouts (Workout.program) are coach-approved already and are never sent.
  * - Fail safe: offline, not configured, refused, rate limited, error or switched off all show as
  *   "not reviewed". Nothing but a successful review response ever shows as approved.
  */
@@ -140,6 +141,8 @@ export const useCoachStore = create<CoachState>()(
           const active = useWorkoutStore.getState().active
           if (!active || active.status !== "ready") return
           const workout = active.workout
+          // An assigned program is already coach-approved: it is never sent for review or corrected.
+          if (workout.program) return
           const key = workoutReviewKey(workout)
           const existing = get().entries[workout.id]
           const now = new Date().toISOString()

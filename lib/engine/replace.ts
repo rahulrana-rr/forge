@@ -2,7 +2,7 @@
  * Swap one slot for a comparable exercise, keeping the slot id and prescription shape.
  */
 import { muscleGroupOf, muscleGroupsOf } from "@/lib/exercises"
-import { DEFAULT_LIBRARY, type Library } from "./library"
+import { DEFAULT_LIBRARY, generationPool, isProgramOnly, type Library } from "./library"
 import {
   DIFFICULTY_RANK,
   MOVEMENT_PATTERN_LABELS,
@@ -125,6 +125,8 @@ export function validReplacement(
   lib: Library = DEFAULT_LIBRARY,
 ): boolean {
   if (candidate.id === current.id) return false
+  // Assigned-program steps are offered only inside a program workout (lib/exercises/types.ts).
+  if (!workout.program && isProgramOnly(candidate)) return false
   if (!passesProfileFilter(candidate, input.profile)) return false
   if (!samePhaseClass(current, candidate, slot.phase)) return false
   if (exclude.has(candidate.id)) return false
@@ -404,7 +406,7 @@ function rebuildSlot(
   } else if (main) {
     rx = prescribe(next, profile.goal, profile.experience, role as MainRole, {
       last,
-      pool: lib.all,
+      pool: workout.program ? lib.all : generationPool(lib),
       allows: (e) => passesProfileFilter(e, profile),
     })
     const prescribedSets = rx.sets

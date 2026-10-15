@@ -271,6 +271,9 @@ export interface Exercise {
    * - "sprint" / "agility": all-out running or change-of-direction conditioning.
    * - "inversion": the body is upside down (handstand work).
    * - "corrective": a targeted corrective drill kept out of the automatic warm-up and cool-down.
+   * - "program_only": a step written for an assigned, coach-approved program (lib/programs: sprint
+   *   drills, box pistols, handstand and L-sit steps). The engine never generates it or offers it
+   *   as a swap in a generated workout; program workouts use it and swap between its steps.
    * - "<area>_friendly" (e.g. "lower_back_friendly"): a variation built to spare a BodyArea its
    *   variationOf parent lists, so it deliberately does not inherit that contraindication.
    *

@@ -29,6 +29,7 @@ model User {
   workouts     Workout[]
   performances ExercisePerformance[]
   progress     UserProgress[]
+  planRevisions PlanRevision[]
 
   @@map("user")
 }
@@ -129,6 +130,9 @@ model Workout {
   totals          Json
   /// PersonalRecord[]
   personalRecords Json
+  /// CompletedWorkoutProgram: which assigned-program day, week and plan revision the workout was.
+  /// Null for engine workouts and for workouts logged before it was recorded.
+  programDay      Json?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   /// Set when the user deleted the workout. The row stays as a tombstone so other devices learn
@@ -177,4 +181,124 @@ model UserProgress {
 
   @@id([userId, exerciseId])
   @@map("user_progress")
+}
+
+// ---------------------------------------------------------------------------
+// Weekly plan adaptation tables. UNUSED: the in-app weekly review was removed on 2026-10-15 (the
+// weekly review is done outside the app). Kept because the migration that created them is applied
+// in production; drop them with a new migration if they are not needed again.
+// ---------------------------------------------------------------------------
+
+/// One proposed or published version of an athlete's program for one program week. The weekly
+/// review job proposes a revision; only an explicit, hash-bound coach approval publishes it.
+/// Rows are never deleted or rewritten after a decision: `status` only moves forward
+/// (PENDING → ACTIVE | REJECTED | SUPERSEDED | EXPIRED; ACTIVE → REPLACED | REVERTED;
+/// NO_CHANGE is a review that proposed nothing), which keeps every past plan inspectable.
+/// The migration also adds two partial unique indexes Prisma cannot declare (keep them in future
+/// migrations): one ACTIVE and one PENDING revision per (userId, weekStart).
+model PlanRevision {
+  id             String    @id
+  /// The athlete.
+  userId         String
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  programId      String
+  /// The assignment's start date ("YYYY-MM-DD") the revision was built for.
+  startDate      String
+  /// First day of the target week ("YYYY-MM-DD").
+  weekStart      String
+  /// Program week of the target week (1..weeks; later weeks repeat).
+  programWeek    Int
+  /// 1..n per athlete and target week.
+  revisionNumber Int
+  status         String
+  /// WeekPlan: the complete plan for the target week, exactly what the coach approves.
+  plan           Json
+  /// sha256 of the canonical plan (lib/adaptation/hash.ts). An approval binds to this value.
+  contentHash    String
+  /// WeeklyAnalysis the proposal was built from (recorded data only; gaps listed as gaps).
+  analysis       Json
+  /// PlanAdjustment[]: every change against the base plan, with rationale and evidence.
+  changes        Json
+  /// sha256 of the inputs (workouts, base plan, profile, assignment). A rerun with the same
+  /// inputs is a no-op, so duplicate job deliveries never create duplicate revisions.
+  inputHash      String
+  /// AdaptationRun that proposed it; null for a coach-requested review.
+  runId          String?
+  /// Who asked for the review: "scheduler" or "coach:<userId>".
+  proposedBy     String
+  createdAt      DateTime  @default(now())
+  /// A pending proposal can no longer be approved after this (the end of its target week).
+  expiresAt      DateTime
+  decidedAt      DateTime?
+  publishedAt    DateTime?
+  /// When it stopped being the newest proposal or the active plan.
+  endedAt        DateTime?
+  /// Why it is not (or no longer) the active plan, in plain words.
+  statusReason   String?
+
+  approval PlanApproval?
+  events   PlanEvent[]
+
+  @@unique([userId, weekStart, revisionNumber])
+  @@index([userId, weekStart, status])
+  @@index([status, expiresAt])
+  @@map("plan_revision")
+}
+
+/// A coach's decision on one exact revision. Append-only; one decision per revision.
+model PlanApproval {
+  id          String       @id
+  revisionId  String       @unique
+  revision    PlanRevision @relation(fields: [revisionId], references: [id], onDelete: Cascade)
+  /// The deciding coach (auth user id and email at the time, kept as written for the audit trail).
+  coachUserId String
+  coachEmail  String
+  /// "APPROVED" or "REJECTED".
+  decision    String
+  /// The content hash the coach reviewed. Publication requires it to equal the revision's hash.
+  contentHash String
+  note        String?
+  createdAt   DateTime     @default(now())
+
+  @@index([coachUserId, createdAt])
+  @@map("plan_approval")
+}
+
+/// Audit trail of the weekly adaptation: every proposal, decision, publication, block and failure.
+model PlanEvent {
+  id         String        @id
+  /// The athlete.
+  userId     String
+  revisionId String?
+  revision   PlanRevision? @relation(fields: [revisionId], references: [id], onDelete: Cascade)
+  type       String
+  /// "scheduler", "coach:<userId>" or "system".
+  actor      String
+  reason     String?
+  data       Json?
+  createdAt  DateTime      @default(now())
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([revisionId])
+  @@map("plan_event")
+}
+
+/// One weekly review period's job state: a lock against concurrent or duplicate deliveries and the
+/// record that drives catch-up runs (Vercel does not retry a failed cron invocation).
+model AdaptationRun {
+  id          String    @id
+  /// The Sunday the review belongs to ("YYYY-MM-DD", review timezone).
+  periodKey   String    @unique
+  /// "RUNNING", "SUCCEEDED", "PARTIAL" or "FAILED".
+  status      String
+  trigger     String
+  attempts    Int       @default(1)
+  startedAt   DateTime  @default(now())
+  heartbeatAt DateTime  @default(now())
+  finishedAt  DateTime?
+  /// RunSummary: counts and per-athlete outcomes (ids only, no personal data).
+  summary     Json?
+  error       String?
+
+  @@map("adaptation_run")
 }

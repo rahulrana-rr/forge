@@ -57,6 +57,8 @@ export function ExerciseCard({ exercise, slot, index, total, units, dimmed = fal
   const tip = coachTipFor(exercise, index)
   const equipment = exercise.equipment.filter((e) => e !== "bodyweight" || exercise.equipment.length === 1)
   const isWorkingSet = slot.phase === "main"
+  // Timed work and explosive drills (sprints, jumps, throws) have no working weight to find.
+  const showLoad = isWorkingSet && (slot.recommendedWeightKg != null || (!timed && !exercise.tags?.includes("explosive")))
   const showRest = slot.restSeconds > 0
 
   return (
@@ -141,7 +143,7 @@ export function ExerciseCard({ exercise, slot, index, total, units, dimmed = fal
           ) : null}
         </dl>
 
-        {isWorkingSet ? (
+        {showLoad ? (
           <div className="rounded-2xl border border-volt/50 bg-volt/8 px-4 py-2.5 dark:border-volt/25 [@container(max-height:459px)]:py-2">
             {slot.recommendedWeightKg != null ? (
               <>

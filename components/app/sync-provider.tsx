@@ -3,11 +3,14 @@
 /**
  * Headless component that keeps the sync store in step with the auth session and triggers
  * background flushes: on sign-in, when the browser comes back online, when history changes,
- * and every five minutes while the tab is visible. Renders nothing.
+ * and every five minutes while the tab is visible. Also keeps the account's program assignment
+ * (lib/programs/store.ts) in step with /api/me. Renders nothing.
  */
 import { useEffect } from "react"
 import { useSession } from "@/lib/auth-client"
+import { useProgramStore } from "@/lib/programs/store"
 import { useHistoryStore, useSyncStore } from "@/lib/store"
+import { api } from "@/lib/sync/client"
 import { hasPendingWork } from "@/lib/sync/sync-store"
 
 const PERIODIC_FLUSH_MS = 5 * 60 * 1000
@@ -33,6 +36,26 @@ export function SyncProvider(): null {
     useSyncStore.getState().setSignedIn(signedIn, userId)
     if (signedIn) flush()
   }, [signedIn, userId, isPending])
+
+  // The program assignment follows the account: fetched on sign-in, kept while offline (so the
+  // program still works without a connection), dropped once the device is online and signed out.
+  useEffect(() => {
+    if (isPending) return
+    const programs = useProgramStore.getState()
+    if (!userId) {
+      if (typeof navigator === "undefined" || navigator.onLine !== false) programs.clear()
+      return
+    }
+    if (programs.userId && programs.userId !== userId) programs.clear()
+    const controller = new AbortController()
+    api
+      .getMe(controller.signal)
+      .then((me) => useProgramStore.getState().setAssignment(userId, me.program ?? null))
+      .catch(() => {
+        // Offline or a server error: keep the assignment this device already has.
+      })
+    return () => controller.abort()
+  }, [userId, isPending])
 
   useEffect(() => {
     if (!signedIn) return
