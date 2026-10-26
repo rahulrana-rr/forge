@@ -15,6 +15,13 @@
  * A single RIR is shown per card, so a range in the plan is shown as its upper (more conservative)
  * end where the week rule gives a range, and the range is named in the week's rule line.
  * After week 7 the block repeats from week 3 (no second re-entry).
+ *
+ * Revision 1 (weekly review of week 2, coach-approved, 26 Oct 2026), first block only unless noted:
+ * Upper A and Lower A were not done in weeks 1-2, so their lifts run one week behind (week 3 at
+ * the re-entry dose, week 4 at week 3's) with no overhead press until week 4, and sprints restart
+ * at the week-1 dose and step up one column a week; Wednesday Zone 2 stays at 30 min in week 3;
+ * the first interval session is capped at about 7-8/10. For every block: no trap bar or
+ * hip-thrust setup, so conventional deadlift and cable pull-through replace them.
  */
 import type { ProgramDefinition, ProgramDose, ProgramItem, ProgramStep, ProgramWeek } from "./types"
 
@@ -47,6 +54,13 @@ interface LiftSpec {
   week3Rir?: number
   /** Extra week-specific changes, applied last. */
   byWeek?: WeekDoses
+  /**
+   * First block only: run one week behind from week 3 (week 3 at week 2's re-entry dose, week 4 at
+   * week 3's), for a day that was missed in weeks 1-2.
+   */
+  holdFirstBlock?: boolean
+  /** First block only: the item's first week. */
+  firstBlockFromWeek?: ProgramWeek
   steps?: ProgramStep[]
   tempo?: string | null
 }
@@ -81,6 +95,14 @@ function lift(spec: LiftSpec): ProgramItem {
     ...(spec.fromWeek ? { fromWeek: spec.fromWeek } : {}),
     ...(spec.steps ? { steps: spec.steps } : {}),
     byWeek,
+    ...(spec.holdFirstBlock || spec.firstBlockFromWeek
+      ? {
+          firstBlock: {
+            ...(spec.firstBlockFromWeek ? { fromWeek: spec.firstBlockFromWeek } : {}),
+            ...(spec.holdFirstBlock ? { byWeek: { 3: { ...byWeek[2] }, 4: { ...byWeek[3] } } } : {}),
+          },
+        }
+      : {}),
   }
 }
 
@@ -198,7 +220,7 @@ const upperA: ProgramItem[] = [
   warmup("band-pull-apart", { reps: [12, 15] }),
   warmup("shoulder-pass-through", { reps: [8, 12], note: "Band dislocates." }),
   warmup("wrist-circles", { reps: [10, 15] }),
-  lift({ exerciseId: "barbell-bench-press", role: "primary_compound", kind: "compound", sets: 3, reps: [5, 8], rir: 2, restSeconds: 150 }),
+  lift({ exerciseId: "barbell-bench-press", role: "primary_compound", kind: "compound", sets: 3, reps: [5, 8], rir: 2, restSeconds: 150, holdFirstBlock: true }),
   lift({
     exerciseId: "pull-up",
     role: "secondary_compound",
@@ -207,10 +229,11 @@ const upperA: ProgramItem[] = [
     reps: [6, 10],
     rir: 2,
     restSeconds: 120,
+    holdFirstBlock: true,
     note: `Strict, from a full hang. Under 6 reps with 3–4 to spare: swipe left for assisted. ${PULL_UP_OR_DIP_LOADING}`,
     steps: [{ exerciseId: "pull-up" }, { exerciseId: "assisted-pull-up" }, { exerciseId: "band-assisted-pull-up" }],
   }),
-  lift({ exerciseId: "chest-supported-dumbbell-row", role: "accessory", kind: "compound", sets: 3, reps: [6, 10], rir: 2, restSeconds: 120 }),
+  lift({ exerciseId: "chest-supported-dumbbell-row", role: "accessory", kind: "compound", sets: 3, reps: [6, 10], rir: 2, restSeconds: 120, holdFirstBlock: true }),
   lift({
     exerciseId: "triceps-dip",
     role: "accessory",
@@ -219,6 +242,7 @@ const upperA: ProgramItem[] = [
     reps: [6, 10],
     rir: 2,
     restSeconds: 120,
+    holdFirstBlock: true,
     note: `Shoulders no lower than elbows, all block. Under 6 reps with 3–4 to spare: swipe left for assisted. Sharp shoulder or elbow pain: stop for the day. ${PULL_UP_OR_DIP_LOADING}`,
     steps: [{ exerciseId: "triceps-dip" }, { exerciseId: "assisted-dip" }],
   }),
@@ -230,7 +254,9 @@ const upperA: ProgramItem[] = [
     reps: [8, 12],
     rir: 2,
     restSeconds: 120,
+    holdFirstBlock: true,
     fromWeek: 3,
+    firstBlockFromWeek: 4,
     note: "Only if your elbows and shoulders felt fine the day after last Monday; otherwise skip it.",
   }),
   lift({
@@ -241,6 +267,7 @@ const upperA: ProgramItem[] = [
     reps: [10, 15],
     rir: 1,
     restSeconds: 40,
+    holdFirstBlock: true,
     note: "Alternate sets with the lateral raise, 30–45 s between.",
   }),
   lift({
@@ -251,9 +278,10 @@ const upperA: ProgramItem[] = [
     reps: [12, 20],
     rir: 1,
     restSeconds: 40,
+    holdFirstBlock: true,
     note: "Alternated with the incline curl. Add reps before load.",
   }),
-  lift({ exerciseId: "face-pull", role: "isolation", kind: "isolation", sets: 2, reps: [12, 20], rir: 2, restSeconds: 60 }),
+  lift({ exerciseId: "face-pull", role: "isolation", kind: "isolation", sets: 2, reps: [12, 20], rir: 2, restSeconds: 60, holdFirstBlock: true }),
   ...UPPER_A_STRETCHES,
   BREATHING_COOLDOWN,
 ]
@@ -268,6 +296,10 @@ const SPRINTS: Record<ProgramWeek, { sets: number; effort: string }> = {
   6: { sets: 6, effort: "90–95%" },
   7: { sets: 3, effort: "80%" },
 }
+/** First block: the sprint column each week uses (no sprints were done in weeks 1-2). */
+const FIRST_BLOCK_SPRINTS: Partial<Record<ProgramWeek, ProgramWeek>> = { 3: 1, 4: 2, 5: 3, 6: 4 }
+const SPRINT_STEP_RULE =
+  "Move up only after a clean session (no tightness, no slowing, at most mild soreness the next day); otherwise repeat last week's dose."
 const SPRINT_NOTE = "Track, turf or firm grass, never a treadmill. Stop on any tightness or clear slowing. No lane: swipe left for sled push 5–6 × 15 m."
 const SLED_NOTE = "No lane: sled push 5–6 × 15 m, fast, walk back to recover. The distance sets the rep; the timer is a guide."
 /** The plan's no-lane option: sled pushes, 3 in the deload week. */
@@ -306,6 +338,15 @@ const lowerA: ProgramItem[] = [
     byWeek: Object.fromEntries(
       (Object.entries(SPRINTS) as [string, { sets: number; effort: string }][]).map(([w, s]) => [w, { sets: s.sets, note: `20 m at ${s.effort}. ${SPRINT_NOTE}` }]),
     ) as WeekDoses,
+    // No sprints in weeks 1-2: restart at week 1's dose and move up one column a week.
+    firstBlock: {
+      byWeek: Object.fromEntries(
+        (Object.entries(FIRST_BLOCK_SPRINTS) as [string, ProgramWeek][]).map(([w, from]) => [
+          w,
+          { sets: SPRINTS[from].sets, note: `20 m at ${SPRINTS[from].effort}. ${SPRINT_STEP_RULE} ${SPRINT_NOTE}` },
+        ]),
+      ) as WeekDoses,
+    },
   },
   {
     exerciseId: "box-jump",
@@ -318,8 +359,9 @@ const lowerA: ProgramItem[] = [
     rir: null,
     note: "Low-to-moderate box. Step down, never jump down.",
     byWeek: { 7: { sets: 2 } },
+    firstBlock: { byWeek: { 3: { note: "First box jumps of the block: low box, well short of your maximum height. Step down, never jump down." } } },
   },
-  lift({ exerciseId: "barbell-back-squat", role: "primary_compound", kind: "compound", sets: 3, reps: [5, 8], rir: 2, restSeconds: 180 }),
+  lift({ exerciseId: "barbell-back-squat", role: "primary_compound", kind: "compound", sets: 3, reps: [5, 8], rir: 2, restSeconds: 180, holdFirstBlock: true }),
   lift({
     exerciseId: "romanian-deadlift",
     role: "secondary_compound",
@@ -328,6 +370,7 @@ const lowerA: ProgramItem[] = [
     reps: [8, 10],
     rir: 2,
     restSeconds: 120,
+    holdFirstBlock: true,
     note: "Use straps if your grip would limit the hanging raises later.",
   }),
   lift({
@@ -338,6 +381,7 @@ const lowerA: ProgramItem[] = [
     reps: [10, 15],
     rir: 1,
     restSeconds: 40,
+    holdFirstBlock: true,
     note: "Alternate sets with the calf raise, 30–45 s between.",
   }),
   lift({
@@ -348,6 +392,7 @@ const lowerA: ProgramItem[] = [
     reps: [10, 15],
     rir: 1,
     restSeconds: 40,
+    holdFirstBlock: true,
     note: "Alternated with the leg curl.",
   }),
   {
@@ -392,6 +437,8 @@ const zone2: ProgramItem[] = [
       ) as WeekDoses),
       ...weeks(BUILD_WEEKS, { durationSeconds: 40 * 60, note: `${ZONE2_NOTE} 35–45 min this week.` }),
     },
+    // Only 10 min of Zone 2 was done in weeks 1-2: stay at 30 min for week 3.
+    firstBlock: { byWeek: { 3: { durationSeconds: 30 * 60 } } },
   },
   ...ZONE2_STRETCHES,
   BREATHING_COOLDOWN,
@@ -490,8 +537,9 @@ const lowerB: ProgramItem[] = [
     durationSeconds: null,
     restSeconds: 60,
     rir: null,
-    note: "3–5 kg ball. Fast throws, full hip drive.",
+    note: "3–5 kg ball. Fast throws, full hip drive. No ball: swipe left for jump squats, not bodyweight squats.",
     untilWeek: 3,
+    alternatives: ["jump-squat"],
   },
   {
     exerciseId: "broad-jump",
@@ -506,8 +554,9 @@ const lowerB: ProgramItem[] = [
     fromWeek: 4,
     byWeek: { 7: { sets: 2 } },
   },
+  // Plan: trap-bar deadlift; no trap bar at the gym, so the conventional deadlift (revision 1).
   lift({
-    exerciseId: "trap-bar-deadlift",
+    exerciseId: "conventional-deadlift",
     role: "primary_compound",
     kind: "compound",
     sets: 3,
@@ -515,8 +564,10 @@ const lowerB: ProgramItem[] = [
     // Plan: RIR 2-3; weeks 4-6 hold compounds at RIR 2.
     rir: 2,
     restSeconds: 180,
-    note: "Keep the same variation all block.",
+    note: "Keep this variation all block. Ramp up from the empty bar. Log the total load including the bar.",
     reentry: { sets: 2, reps: [5, 5], rir: 4 },
+    // Week 2 was a different variation each week: first session of week 3 at 2 × 5, RIR 3-4.
+    holdFirstBlock: true,
   }),
   lift({
     exerciseId: "box-pistol-squat",
@@ -543,8 +594,9 @@ const lowerB: ProgramItem[] = [
     restSeconds: 90,
     byWeek: { 1: { note: "Light this week." } },
   }),
-  // Plan: RIR 1-2.
-  lift({ exerciseId: "barbell-hip-thrust", role: "accessory", kind: "compound", sets: 2, reps: [8, 12], rir: 2, restSeconds: 90 }),
+  // Plan: barbell hip thrust, RIR 1-2; no hip-thrust setup at the gym, so the plan's cable
+  // pull-through fallback at 10-12 reps (revision 1).
+  lift({ exerciseId: "cable-pull-through", role: "accessory", kind: "compound", sets: 2, reps: [10, 12], rir: 2, restSeconds: 90 }),
   {
     exerciseId: "pallof-press",
     phase: "main",
@@ -554,7 +606,7 @@ const lowerB: ProgramItem[] = [
     durationSeconds: null,
     restSeconds: 45,
     rir: null,
-    note: "Per side, with a 2 s hold.",
+    note: "Per side, with a 2 s hold. Use the cable stack; the superman is not a substitute (no anti-rotation).",
     byWeek: { 7: { sets: 1 } },
   },
   ...LOWER_B_STRETCHES,
@@ -593,6 +645,14 @@ const conditioning: ProgramItem[] = [
     byWeek: Object.fromEntries(
       (Object.entries(INTERVAL_ROUNDS) as [string, number][]).map(([w, rounds]) => [w, { sets: rounds }]),
     ) as WeekDoses,
+    // First interval session after almost no conditioning in weeks 1-2.
+    firstBlock: {
+      byWeek: {
+        3: {
+          note: "First interval session: 1 min at about 7–8/10, not harder, 2 min easy between rounds. Bike or air bike. Stop and get medical care for chest pain, fainting, unusual breathlessness or palpitations.",
+        },
+      },
+    },
   },
   {
     exerciseId: "bike-cooldown",
@@ -628,6 +688,7 @@ export const returningLifterCalisthenics: ProgramDefinition = {
   id: RETURNING_LIFTER_CALISTHENICS_ID,
   title: "Return to strength: muscle + calisthenics (7 weeks)",
   goal: "muscle_gain",
+  revision: 1,
   weeks: 7,
   repeatFromWeek: 3,
   schedule: { 0: "rest", 1: "upper-a", 2: "lower-a", 3: "zone-2", 4: "upper-b", 5: "lower-b", 6: "conditioning" },
@@ -744,6 +805,15 @@ export const returningLifterCalisthenics: ProgramDefinition = {
     1: [
       "Before week 1, complete the PAR-Q+. Get medical clearance first if any answer is yes, or if the break followed illness, injury or surgery.",
       "Stop and get medical care for chest pain, fainting, unusual breathlessness or palpitations.",
+    ],
+    3: [
+      "Upper A and Lower A were not done in weeks 1-2, so this week they stay at re-entry: 2 sets at RIR 3-4, no overhead press yet, sprints 4 × 20 m at 70%.",
+      "Keep sessions near 65 min: the prescribed sets only, rest timer on. Running over: drop the last set of the last isolation exercise first. Never cut the warm-up, ramp-up sets, sprint prep, main-lift rest or cool-down.",
+      "Program days only this block, no app-generated workouts. Log RPE on at least the last set of every compound, and log the total load including the bar.",
+      "Handstand: your wrists were fine after the wall walks, so swipe left for the chest-to-wall handstand (20 s) if the position was clean. Tuck L-sit stays until 3 × 15 s.",
+    ],
+    4: [
+      "Upper A and Lower A run one week behind: this week their lifts use week 3's full sets at RIR 3, and sprints are 4 × 20 m at 80% if last week's were clean. Overhead press joins Monday if your shoulders and elbows felt fine after last Monday.",
     ],
   },
 }

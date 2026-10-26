@@ -23,6 +23,7 @@ import {
   type ReplacementCandidate,
   type Workout,
   type WorkoutExercise,
+  type WorkoutProgramInfo,
 } from "@/lib/engine/types"
 import { getProgram } from "./index"
 import type {
@@ -77,32 +78,45 @@ export function programDayFor(
   return { dayKey, day, week: week as ProgramWeek }
 }
 
-/** Identifies the program plan a date gets from an assignment, or null when the engine plans it. */
+/**
+ * Identifies the program plan a date gets from an assignment (including the program's revision),
+ * or null when the engine plans it.
+ */
 export function programPlanKey(assignment: ProgramAssignment | null, date: string): string | null {
   const program = assignment ? getProgram(assignment.programId) : undefined
   if (!assignment || !program || !programDayFor(program, assignment, date)) return null
-  return `${program.id}|${assignment.startDate}`
+  return `${program.id}|${assignment.startDate}|r${program.revision ?? 0}`
 }
 
 /** The same key read from a workout (Workout.program), or null for an engine workout. */
 export function workoutPlanKey(workout: Pick<Workout, "program">): string | null {
-  return workout.program ? `${workout.program.id}|${workout.program.startDate}` : null
+  return workout.program ? `${workout.program.id}|${workout.program.startDate}|r${workout.program.revision ?? 0}` : null
 }
 
 /* ---------------------------------------------------------------------------------------------- */
 /* Items                                                                                          */
 /* ---------------------------------------------------------------------------------------------- */
 
-/** Whether an item is programmed in a week (fromWeek / untilWeek, inclusive). */
-export function itemInWeek(item: ProgramItem, week: ProgramWeek): boolean {
-  return (item.fromWeek ?? 1) <= week && week <= (item.untilWeek ?? Number.POSITIVE_INFINITY)
+/**
+ * Whether an item is programmed in a week (fromWeek / untilWeek, inclusive). On the first pass
+ * through the block an item's firstBlock.fromWeek replaces its fromWeek.
+ */
+export function itemInWeek(item: ProgramItem, week: ProgramWeek, firstBlock = false): boolean {
+  const from = (firstBlock ? item.firstBlock?.fromWeek : undefined) ?? item.fromWeek ?? 1
+  return from <= week && week <= (item.untilWeek ?? Number.POSITIVE_INFINITY)
+}
+
+/** Whether a program workout's day falls in the first pass through the block (not a repeat). */
+export function inFirstBlock(info: Pick<WorkoutProgramInfo, "startDate" | "week">, date: string): boolean {
+  return calendarWeek(info.startDate, date) === info.week
 }
 
 /**
  * The item's dose for a week and step: base, then the step's changes, then the item's week
- * changes, then (for a step other than the item's own exercise) the step's week changes.
+ * changes, then its first-block changes (first pass only), then (for a step other than the
+ * item's own exercise) the step's week changes.
  */
-export function doseFor(item: ProgramItem, week: ProgramWeek, exerciseId: string = item.exerciseId): ProgramDose {
+export function doseFor(item: ProgramItem, week: ProgramWeek, exerciseId: string = item.exerciseId, firstBlock = false): ProgramDose {
   const step = item.steps?.find((s) => s.exerciseId === exerciseId)
   const base: ProgramDose = {
     sets: item.sets,
@@ -113,7 +127,8 @@ export function doseFor(item: ProgramItem, week: ProgramWeek, exerciseId: string
     note: item.note,
   }
   const stepWeek = exerciseId !== item.exerciseId ? step?.byWeek?.[week] : undefined
-  return { ...base, ...step?.dose, ...item.byWeek?.[week], ...stepWeek }
+  const firstBlockWeek = firstBlock ? item.firstBlock?.byWeek?.[week] : undefined
+  return { ...base, ...step?.dose, ...item.byWeek?.[week], ...firstBlockWeek, ...stepWeek }
 }
 
 /** When an exercise was last completed (epoch ms), from history and progress; 0 when never. */
@@ -211,22 +226,23 @@ export function buildProgramWorkout(program: ProgramDefinition, assignment: Prog
   const planned = programDayFor(program, assignment, input.date)
   if (!planned) return null
   const { dayKey, day, week } = planned
+  const absolute = calendarWeek(assignment.startDate, input.date) ?? week
+  const firstBlock = absolute === week
   const exercises: WorkoutExercise[] = []
   for (const item of day.items) {
-    if (!itemInWeek(item, week)) continue
+    if (!itemInWeek(item, week, firstBlock)) continue
     const exerciseId = currentStep(item, input)
     const exercise = getExercise(exerciseId)
     if (!exercise) continue
-    exercises.push(slotFor(item, exercise, doseFor(item, week, exerciseId), input, { slotId: newId(), replacedFromExerciseId: null }))
+    exercises.push(slotFor(item, exercise, doseFor(item, week, exerciseId, firstBlock), input, { slotId: newId(), replacedFromExerciseId: null }))
   }
   const blockRule = program.weekRules[week] ?? null
-  const absolute = calendarWeek(assignment.startDate, input.date) ?? week
   // Block 2 starts after the last week and repeats from repeatFromWeek (no second re-entry).
   const block = absolute > program.weeks ? Math.floor((absolute - program.weeks - 1) / (program.weeks - program.repeatFromWeek + 1)) + 2 : 1
   const notes = [
     ...(blockRule ? [blockRule] : []),
     ...(block > 1 ? [`Block ${block}: the program repeats from week ${program.repeatFromWeek}.`] : []),
-    ...(absolute === week ? (program.weekNotes?.[week] ?? []) : []),
+    ...(firstBlock ? (program.weekNotes?.[week] ?? []) : []),
   ]
   const workout: Workout = {
     id: newId(),
@@ -249,6 +265,7 @@ export function buildProgramWorkout(program: ProgramDefinition, assignment: Prog
       weeks: program.weeks,
       startDate: assignment.startDate,
       blockRule,
+      ...(program.revision ? { revision: program.revision } : {}),
     },
   }
   workout.estimatedMinutes = minutesFor(day, week) ?? estimateDurationMinutes(workout)
@@ -273,7 +290,8 @@ export function programItemFor(workout: Workout, slot: WorkoutExercise): Program
   const week = info.week as ProgramWeek
   const ids = new Set([slot.replacedFromExerciseId, slot.exerciseId].filter((id): id is string => !!id))
   const matches = (item: ProgramItem) => ids.has(item.exerciseId) || !!item.steps?.some((s) => ids.has(s.exerciseId))
-  return day.items.find((item) => item.phase === slot.phase && itemInWeek(item, week) && matches(item)) ?? null
+  const firstBlock = inFirstBlock(info, workout.date)
+  return day.items.find((item) => item.phase === slot.phase && itemInWeek(item, week, firstBlock) && matches(item)) ?? null
 }
 
 /**
@@ -312,6 +330,7 @@ function repWork(exercise: Exercise): boolean {
 function reslot(workout: Workout, slot: WorkoutExercise, next: Exercise, input: EngineInput): WorkoutExercise {
   const item = programItemFor(workout, slot)
   const week = (workout.program?.week ?? 1) as ProgramWeek
+  const firstBlock = workout.program ? inFirstBlock(workout.program, workout.date) : false
   const replacedFrom = slot.replacedFromExerciseId ?? slot.exerciseId
   const base = { slotId: slot.slotId, replacedFromExerciseId: replacedFrom === next.id ? null : replacedFrom }
   const asItem: ProgramItem = item ?? {
@@ -327,7 +346,7 @@ function reslot(workout: Workout, slot: WorkoutExercise, next: Exercise, input: 
   }
   const isStep = !!asItem.steps?.some((s) => s.exerciseId === next.id) || asItem.exerciseId === next.id
   const current: ProgramDose = isStep
-    ? doseFor(asItem, week, next.id)
+    ? doseFor(asItem, week, next.id, firstBlock)
     : // A substitute keeps the dose, not the item's note: that names the item's own steps and cues.
       { sets: slot.sets, reps: slot.reps, durationSeconds: slot.durationSeconds, restSeconds: slot.restSeconds, rir: slot.rir, note: null }
   const sameShape = (current.reps !== null) === repWork(next)

@@ -67,6 +67,15 @@ export interface ProgramItem extends ProgramDose {
    */
   alternatives?: string[]
   /**
+   * Changes for the first pass through the block only; repeats use the item as written. Used to
+   * hold back step-ups after missed sessions (weekly review): `fromWeek` replaces the item's
+   * first week, and `byWeek` applies after the item's own week changes.
+   */
+  firstBlock?: {
+    fromWeek?: ProgramWeek
+    byWeek?: Partial<Record<ProgramWeek, Partial<ProgramDose>>>
+  }
+  /**
    * Load the card from the user's logged history (engine progression) or a starting estimate.
    * Default: true for external-load lifts that are not explosive; never for bodyweight, assisted,
    * timed or distance work.
@@ -110,7 +119,12 @@ export interface ProgramDefinition {
   weekRules: Record<ProgramWeek, string>
   /** Habits that go with the program (focus, fuel, regular checks), shown with the program. */
   habits?: string[]
-  /** Extra overview notes for one week only (e.g. pre-participation screening before week 1). */
+  /**
+   * Bumped whenever the programming changes. Part of the plan key, so a day planned on the device
+   * but not started is rebuilt with the new prescription. Absent = 0.
+   */
+  revision?: number
+  /** Extra overview notes for the first pass through one week only (e.g. pre-participation screening before week 1). */
   weekNotes?: Partial<Record<ProgramWeek, string[]>>
 }
 

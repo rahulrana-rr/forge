@@ -106,6 +106,8 @@ export interface WorkoutProgramInfo {
   startDate: string
   /** The week's block rule, one line. */
   blockRule: string | null
+  /** ProgramDefinition.revision the day was built from (absent = 0). */
+  revision?: number
 }
 
 export interface EngineInput {

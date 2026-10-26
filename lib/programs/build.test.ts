@@ -32,6 +32,11 @@ function day(week: number, mondayOffset: number, history: CompletedWorkout[] = [
   return workout
 }
 
+/** Weeks 3-7 of the second block (the plan as written, without the first block's holds). */
+function repeat(week: number, mondayOffset: number): Workout {
+  return day(week + 5, mondayOffset)
+}
+
 const MON = 0
 const TUE = 1
 const WED = 2
@@ -97,7 +102,7 @@ describe("buildProgramWorkout", () => {
     expect(day(3, SUN).title).toBe("Rest day · Week 3 of 7")
   })
 
-  it("weeks 1-2: 2 working sets per lift at RIR 3, no overhead press, trap bar 2 × 5 at RIR 4", () => {
+  it("weeks 1-2: 2 working sets per lift at RIR 3, no overhead press, deadlift 2 × 5 at RIR 4", () => {
     for (const week of [1, 2]) {
       const mon = day(week, MON)
       expect(slot(mon, "seated-dumbbell-shoulder-press")).toBeUndefined()
@@ -106,7 +111,7 @@ describe("buildProgramWorkout", () => {
         expect(must(mon, id).rir, id).toBe(3)
       }
       const fri = day(week, FRI)
-      expect(must(fri, "trap-bar-deadlift")).toMatchObject({ sets: 2, reps: [5, 5], rir: 4 })
+      expect(must(fri, "conventional-deadlift")).toMatchObject({ sets: 2, reps: [5, 5], rir: 4 })
       expect(slot(fri, "medicine-ball-scoop-toss")?.sets).toBe(3)
       expect(slot(fri, "broad-jump")).toBeUndefined()
       // Skill holds stay 3 sets.
@@ -121,24 +126,28 @@ describe("buildProgramWorkout", () => {
     expect(day(2, MON).notes?.join(" ")).not.toMatch(/PAR-Q\+/)
   })
 
-  it("week 3: full sets, compounds at RIR 3, isolation at RIR 2, overhead press joins", () => {
-    const mon = day(3, MON)
+  it("week 3 as written (repeat blocks): full sets, compounds at RIR 3, isolation at RIR 2, overhead press joins", () => {
+    const mon = repeat(3, MON)
     expect(must(mon, "barbell-bench-press")).toMatchObject({ sets: 3, reps: [5, 8], rir: 3 })
     expect(must(mon, "incline-dumbbell-curl")).toMatchObject({ sets: 2, rir: 2 })
     expect(must(mon, "seated-dumbbell-shoulder-press")).toMatchObject({ sets: 2, reps: [8, 12], rir: 3 })
-    expect(must(day(3, FRI), "trap-bar-deadlift")).toMatchObject({ sets: 3, reps: [4, 6], rir: 3 })
-    expect(must(day(3, TUE), "seated-leg-curl")).toMatchObject({ sets: 3, rir: 2 })
+    expect(must(repeat(3, FRI), "conventional-deadlift")).toMatchObject({ sets: 3, reps: [4, 6], rir: 3 })
+    expect(must(repeat(3, TUE), "seated-leg-curl")).toMatchObject({ sets: 3, rir: 2 })
+    expect(must(repeat(3, WED), "stationary-bike").durationSeconds).toBe(35 * 60)
+    // The first block's week notes stay in the first block.
+    expect(mon.notes?.join(" ")).not.toMatch(/were not done in weeks 1-2/)
   })
 
-  it("weeks 4-6: the listed prescription, compounds at RIR 2", () => {
+  it("weeks 4-6 as written (repeat blocks): the listed prescription, compounds at RIR 2", () => {
     for (const week of [4, 5, 6]) {
+      const day = (_week: number, offset: number) => repeat(week, offset)
       const mon = day(week, MON)
       expect(must(mon, "barbell-bench-press")).toMatchObject({ sets: 3, reps: [5, 8], rir: 2, restSeconds: 150 })
       expect(must(mon, "pull-up")).toMatchObject({ sets: 3, reps: [6, 10], rir: 2 })
       expect(must(mon, "dumbbell-lateral-raise")).toMatchObject({ sets: 2, reps: [12, 20], rir: 1 })
       expect(must(day(week, TUE), "barbell-back-squat")).toMatchObject({ sets: 3, reps: [5, 8], rir: 2, restSeconds: 180 })
       expect(must(day(week, THU), "lat-pulldown")).toMatchObject({ sets: 3, reps: [8, 12], rir: 2 })
-      expect(must(day(week, FRI), "trap-bar-deadlift")).toMatchObject({ sets: 3, reps: [4, 6], rir: 2 })
+      expect(must(day(week, FRI), "conventional-deadlift")).toMatchObject({ sets: 3, reps: [4, 6], rir: 2 })
       // Scoop toss weeks 1-3, broad jump from week 4.
       expect(slot(day(week, FRI), "medicine-ball-scoop-toss")).toBeUndefined()
       expect(must(day(week, FRI), "broad-jump")).toMatchObject({ sets: 3, reps: [3, 3] })
@@ -175,7 +184,7 @@ describe("buildProgramWorkout", () => {
       [7, 3, "80%"],
     ]
     for (const [week, sets, effort] of expected) {
-      const sprint = must(day(week, TUE), "acceleration-sprint")
+      const sprint = must(week <= 2 ? day(week, TUE) : repeat(week, TUE), "acceleration-sprint")
       expect(sprint.sets, `week ${week}`).toBe(sets)
       expect(sprint.reps).toEqual([1, 1])
       expect(sprint.note).toContain(`20 m at ${effort}.`)
@@ -186,7 +195,7 @@ describe("buildProgramWorkout", () => {
   it("Zone 2 minutes and Saturday conditioning", () => {
     const minutes: [number, number][] = [[1, 30], [2, 30], [3, 35], [4, 40], [5, 40], [6, 40], [7, 30]]
     for (const [week, m] of minutes) {
-      const wed = day(week, WED)
+      const wed = week <= 2 ? day(week, WED) : repeat(week, WED)
       expect(wed.exercises.filter((e) => e.phase === "main")).toHaveLength(1)
       expect(wed.exercises[0]).toMatchObject({ exerciseId: "stationary-bike", sets: 1, durationSeconds: m * 60 })
     }
@@ -201,6 +210,61 @@ describe("buildProgramWorkout", () => {
       expect(sat.exercises.filter((e) => e.phase !== "cooldown" || e.exerciseId === "bike-cooldown").map((e) => e.exerciseId)).toEqual(["warmup-bike", "bike-intervals", "bike-cooldown"])
       expect(must(sat, "bike-intervals")).toMatchObject({ sets: n, durationSeconds: 60, restSeconds: 120 })
     }
+  })
+
+  it("revision 1, first block: Upper A and Lower A run one week behind from week 3", () => {
+    const mon3 = day(3, MON)
+    for (const id of ["barbell-bench-press", "pull-up", "chest-supported-dumbbell-row", "triceps-dip", "incline-dumbbell-curl", "face-pull"]) {
+      expect(must(mon3, id), id).toMatchObject({ sets: 2, rir: 3 })
+    }
+    expect(slot(mon3, "seated-dumbbell-shoulder-press")).toBeUndefined()
+    expect(must(mon3, "triceps-dip").note).toMatch(/Shoulders no lower than elbows/)
+    expect(must(day(3, TUE), "barbell-back-squat")).toMatchObject({ sets: 2, reps: [5, 8], rir: 3 })
+    expect(must(day(3, TUE), "romanian-deadlift")).toMatchObject({ sets: 2, rir: 3 })
+    expect(must(day(3, TUE), "box-jump").note).toMatch(/well short of your maximum/)
+    // Week 4 gets week 3's prescription, and overhead press joins.
+    const mon4 = day(4, MON)
+    expect(must(mon4, "barbell-bench-press")).toMatchObject({ sets: 3, reps: [5, 8], rir: 3 })
+    expect(must(mon4, "seated-dumbbell-shoulder-press")).toMatchObject({ sets: 2, reps: [8, 12], rir: 3 })
+    expect(must(day(4, TUE), "seated-leg-curl")).toMatchObject({ sets: 3, rir: 2 })
+    // Weeks 5-6 and the deload are as written.
+    expect(must(day(5, MON), "barbell-bench-press")).toMatchObject({ sets: 3, rir: 2 })
+    expect(must(day(7, MON), "barbell-bench-press")).toMatchObject({ sets: 2, rir: 4 })
+    expect(mon3.notes?.join(" ")).toMatch(/were not done in weeks 1-2/)
+    expect(mon4.notes?.join(" ")).toMatch(/one week behind/)
+  })
+
+  it("revision 1, first block: sprints restart at the week-1 dose and step up one column a week", () => {
+    const expected: [number, number, string][] = [[3, 4, "70%"], [4, 4, "80%"], [5, 5, "85%"], [6, 6, "90%"], [7, 3, "80%"]]
+    for (const [week, sets, effort] of expected) {
+      const sprint = must(day(week, TUE), "acceleration-sprint")
+      expect(sprint.sets, `week ${week}`).toBe(sets)
+      expect(sprint.note).toContain(`20 m at ${effort}.`)
+      if (week < 7) expect(sprint.note).toMatch(/Move up only after a clean session/)
+    }
+  })
+
+  it("revision 1, first block: Zone 2 stays at 30 min and the first intervals are capped; Upper B and Lower B as written", () => {
+    expect(must(day(3, WED), "stationary-bike").durationSeconds).toBe(30 * 60)
+    expect(must(day(4, WED), "stationary-bike").durationSeconds).toBe(40 * 60)
+    expect(must(day(3, SAT), "bike-intervals")).toMatchObject({ sets: 5 })
+    expect(must(day(3, SAT), "bike-intervals").note).toMatch(/7–8\/10, not harder/)
+    expect(must(day(4, SAT), "bike-intervals").note).toMatch(/about 8\/10/)
+    expect(must(day(3, THU), "lat-pulldown")).toMatchObject({ sets: 3, rir: 3 })
+    expect(must(day(3, FRI), "leg-press")).toMatchObject({ sets: 3, rir: 3 })
+    // The deadlift was a different variation in each of weeks 1-2: it also runs a week behind.
+    expect(must(day(3, FRI), "conventional-deadlift")).toMatchObject({ sets: 2, reps: [5, 5], rir: 4 })
+    expect(must(day(4, FRI), "conventional-deadlift")).toMatchObject({ sets: 3, reps: [4, 6], rir: 3 })
+  })
+
+  it("revision 1: conventional deadlift and cable pull-through replace the trap bar and hip thrust in every block", () => {
+    for (const workout of [day(3, FRI), repeat(3, FRI), repeat(6, FRI)]) {
+      expect(slot(workout, "trap-bar-deadlift")).toBeUndefined()
+      expect(slot(workout, "barbell-hip-thrust")).toBeUndefined()
+      expect(must(workout, "conventional-deadlift").note).toMatch(/total load including the bar/)
+      expect(must(workout, "cable-pull-through")).toMatchObject({ sets: 2, reps: [10, 12] })
+    }
+    expect(must(day(3, FRI), "medicine-ball-scoop-toss").note).toMatch(/jump squats/)
   })
 
   it("every training day ends with the coach-approved stretches, then optional breathing", () => {
@@ -243,7 +307,7 @@ describe("buildProgramWorkout", () => {
   })
 
   it("names the later target when a new load is found above the slot's RIR, and prints a fixed rep count once", () => {
-    const raise = must(day(4, MON), "dumbbell-lateral-raise")
+    const raise = must(repeat(4, MON), "dumbbell-lateral-raise")
     expect(raise.rir).toBe(1)
     expect(raise.note).toContain("leave about 2 in reserve this first time, then do your working sets at that load and log it; from next session work at RIR 1.")
     const fri = day(4, FRI)
@@ -399,5 +463,12 @@ describe("assignment helpers", () => {
     expect(programPlanKey(null, mon.date)).toBeNull()
     expect(programPlanKey(assignment, addDays(START, -1))).toBeNull()
     expect(programPlanKey({ ...assignment, startDate: addDays(START, 7) }, mon.date)).toBeNull()
+  })
+
+  it("keys a plan by the program's revision, so a revised program replaces an unstarted plan", () => {
+    const mon = day(3, MON)
+    expect(mon.program?.revision).toBe(program.revision)
+    const before = { ...mon, program: mon.program ? { ...mon.program, revision: undefined } : undefined }
+    expect(workoutPlanKey(before)).not.toBe(programPlanKey(assignment, mon.date))
   })
 })
